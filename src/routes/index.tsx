@@ -1,112 +1,245 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, Bookmark, BrainCircuit, Check, CheckCheck, ChevronDown, Clock3, Code2, FlaskConical, Globe2, GraduationCap, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, Users, X, Zap } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, CheckCheck, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
-import heroImage from '@/assets/ai-network.jpg';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
-    { title: 'AI FLEX Connect — Find Your Next AI Opportunity' },
-    { name: 'description', content: 'Explore AI training, evaluation, annotation and research opportunities. Discover platforms, build your skills and stay connected to AI work.' },
-    { property: 'og:title', content: 'AI FLEX Connect — Find Your Next AI Opportunity' },
-    { property: 'og:description', content: 'Your connection to AI work, trusted platforms and practical learning resources.' },
+    { title: 'AI FLEX Connect — Find Your Place in the AI Work Economy' },
+    { name: 'description', content: 'Discover AI work, understand AI training opportunities, learn useful skills and find legitimate AI platforms with AI FLEX Connect.' },
+    { property: 'og:title', content: 'AI FLEX Connect — Find Your Place in the AI Work Economy' },
+    { property: 'og:description', content: 'An information and opportunity platform for people exploring AI work.' },
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary_large_image' },
   ] }),
   component: Index,
 });
 
-function Brand({ dark = false }: { dark?: boolean }) {
-  return <div className="flex shrink-0 items-center gap-2.5"><span className="brand-mark"><Zap size={23} strokeWidth={2.6} /></span><div className={`leading-none ${dark ? 'text-on-dark' : 'text-foreground'}`}><span className="font-display text-lg font-extrabold">AI FLEX</span><span className="mt-1 block text-[10px] font-medium tracking-[0.2em]">CONNECT</span></div></div>;
+type Modal = { title: string; text: string; detail?: ReactNode } | null;
+
+const categoryInfo: Record<string, { icon: typeof BrainCircuit; text: string }> = {
+  'AI Trainer': { icon: BrainCircuit, text: 'Teach models through writing, examples and expert feedback.' },
+  'AI Evaluator': { icon: CheckCheck, text: 'Judge AI output for quality, relevance and accuracy.' },
+  'LLM Evaluation': { icon: Code2, text: 'Review language-model reasoning and responses.' },
+  'Data Annotation': { icon: Layers3, text: 'Label text, image and audio data that AI learns from.' },
+  'AI Research': { icon: FlaskConical, text: 'Support studies on how people and AI work together.' },
+  'AI Safety': { icon: ShieldCheck, text: 'Help test AI for harmful, biased or unsafe behaviour.' },
+};
+
+function Brand() {
+  return <span className="flex items-center gap-2.5">
+    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-primary font-display text-sm font-extrabold text-primary-foreground glow-gold">AF<span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-coral" /></span>
+    <span className="font-display text-[17px] font-bold tracking-tight text-foreground">AI FLEX <span className="font-medium text-muted-foreground">Connect</span></span>
+  </span>;
 }
 
-function SectionHeading({ eyebrow, title, subtitle, action }: { eyebrow: string; title: string; subtitle?: string; action?: ReactNode }) {
-  return <div className="mb-7 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3"><div className="min-w-0"><p className="section-label mb-2 text-muted-foreground">{eyebrow}</p><h2 className="display-heading text-2xl sm:text-[28px]">{title}</h2>{subtitle && <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{subtitle}</p>}</div>{action}</div>;
+function Heading({ label, title, text, action }: { label: string; title: string; text?: string; action?: ReactNode }) {
+  return <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+    <div className="max-w-xl">
+      <p className="section-label mb-3 flex items-center gap-2 text-muted-foreground"><span className="h-px w-6 bg-coral" />{label}</p>
+      <h2 className="display-heading text-3xl text-foreground sm:text-4xl">{title}</h2>
+      {text && <p className="mt-3 leading-relaxed text-muted-foreground">{text}</p>}
+    </div>
+    {action}
+  </div>;
+}
+
+function HeroGraphic() {
+  return <div className="relative mx-auto aspect-square w-full max-w-[420px]" aria-hidden="true">
+    <div className="dot-grid absolute inset-6 rounded-full opacity-70" />
+    <div className="orbit absolute inset-0" />
+    <div className="orbit absolute inset-[18%]" />
+    <div className="absolute inset-[34%] grid place-items-center rounded-full bg-primary glow-gold"><Sparkles className="h-10 w-10 text-primary-foreground" /></div>
+    {[
+      { t: 'AI Trainer', c: 'left-0 top-[18%]' },
+      { t: 'Evaluation', c: 'right-0 top-[30%]' },
+      { t: 'AI Safety', c: 'bottom-[14%] left-[8%]' },
+      { t: 'Learning', c: 'bottom-[4%] right-[14%]' },
+    ].map((n, i) => <span key={n.t} className={`float-slow absolute ${n.c} flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground shadow-sm`} style={{ animationDelay: `${i * 0.8}s` }}><span className={`h-2 w-2 rounded-full ${i % 2 ? 'bg-coral' : 'bg-primary'}`} />{n.t}</span>)}
+  </div>;
 }
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('All categories');
+  const [category, setCategory] = useState('All');
   const [location, setLocation] = useState('All locations');
-  const [showAll, setShowAll] = useState(false);
-  const [saved, setSaved] = useState<number[]>([]);
-  const [modal, setModal] = useState<{ title: string; text: string; kind?: string; detail?: ReactNode } | null>(null);
-  const scrollTo = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); setMenuOpen(false); };
-  const membership = (kind: string) => { setMenuOpen(false); setModal({ title: kind === 'Join' ? 'Your next chapter in AI starts here.' : 'Become part of AI FLEX Connect', text: 'Members will receive additional AI training, practical tips and resources to help them navigate AI work with confidence.', kind: 'membership' }); };
-  const hasFilters = query.trim() !== '' || category !== 'All categories' || location !== 'All locations';
-  const filtered = opportunities.filter(item => (category === 'All categories' || item.category === category) && (location === 'All locations' || item.location === location) && `${item.title} ${item.company} ${item.skills.join(' ')}`.toLowerCase().includes(query.toLowerCase().trim()));
-  const visible = showAll || hasFilters ? filtered : filtered.slice(0, 3);
-  const resetFilters = () => { setQuery(''); setCategory('All categories'); setLocation('All locations'); };
-  const nav = [{ name: 'Home', id: 'home' }, { name: 'AI Work', id: 'discovery' }, { name: 'AI Platforms', id: 'platforms' }, { name: 'Learning', id: 'learning' }, { name: 'AI Work Updates', id: 'updates' }];
-  const categoryIcons = [BrainCircuit, CheckCheck, Code2, Layers3, FlaskConical];
-  const detail = (item: typeof opportunities[number]) => setModal({ title: item.title, text: item.description, kind: 'opportunity', detail: <div className="space-y-4"><div className="flex flex-wrap gap-2 text-sm"><span className="rounded bg-muted px-3 py-1">{item.company}</span><span className="rounded bg-muted px-3 py-1">{item.location}</span><span className="rounded bg-muted px-3 py-1">{item.type}</span></div><p><strong>{item.rate} / hour</strong> <span className="text-sm text-muted-foreground">· Illustrative rate</span></p><h3 className="font-semibold">What you could bring</h3><p className="text-sm text-muted-foreground">{item.skills.join(' · ')}</p><div className="rounded-md border border-border bg-muted p-4 text-sm leading-relaxed">This is a sample opportunity, not a live job listing. Availability, eligibility and rates have not been verified. Applications are not open through AI FLEX Connect.</div></div> });
+  const [modal, setModal] = useState<Modal>(null);
 
-  return <div id="home">
-    <header className="relative z-20 border-b border-border bg-card">
-      <div className="section-shell grid h-[88px] grid-cols-[minmax(0,1fr)_auto] items-center gap-5 lg:flex lg:justify-between">
-        <Button variant="ghost" className="h-auto justify-start p-0 hover:bg-transparent" onClick={() => scrollTo('home')} aria-label="AI FLEX Connect home"><Brand /></Button>
-        <nav aria-label="Main navigation" className="hidden items-center gap-0.5 lg:flex">{nav.map((item, i) => <Button key={item.name} variant="ghost" onClick={() => scrollTo(item.id)} className={`nav-control px-2.5 text-xs ${i === 0 ? 'font-bold' : 'text-muted-foreground'}`}>{item.name}</Button>)}{['Join', 'Register'].map(name => <Button key={name} variant="ghost" className="nav-control px-2.5 text-xs text-muted-foreground" onClick={() => membership(name)}>{name}</Button>)}<Button variant="ghost" className="nav-control px-2.5 text-xs text-muted-foreground" onClick={() => setModal({ title: 'A clearer connection to AI work.', text: 'AI FLEX Connect brings together AI-work opportunities, training platforms, learning resources and industry updates in one professional discovery space. Our focus is helping people explore the world of AI work with clarity and confidence.' })}>About</Button></nav>
-        <div className="flex shrink-0 items-center gap-2"><Button className="hidden h-10 text-xs sm:inline-flex" onClick={() => scrollTo('discovery')}>Explore AI Work <ArrowUpRight /></Button><Button size="icon" variant="ghost" className="lg:hidden" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button></div>
+  const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
+  const about = () => { setMenuOpen(false); setModal({ title: 'About AI FLEX Connect', text: 'AI FLEX Connect is an information and opportunity platform that helps people discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms.' }); };
+  const nav = [
+    { name: 'Home', act: () => go('home') }, { name: 'About', act: about }, { name: 'AI Work', act: () => go('find') },
+    { name: 'AI Platforms', act: () => go('platforms') }, { name: 'AI Learning', act: () => go('learning') },
+    { name: 'AI Updates', act: () => go('updates') }, { name: 'Join + Register', act: () => go('join') },
+  ];
+  const locations = ['All locations', ...Array.from(new Set(opportunities.map(o => o.location)))];
+  const filtered = opportunities.filter(o => (category === 'All' || o.category === category) && (location === 'All locations' || o.location === location) && `${o.title} ${o.company} ${o.skills.join(' ')}`.toLowerCase().includes(query.toLowerCase().trim()));
+  const pickCategory = (c: string) => { setCategory(c); go('featured'); };
+  const openDetail = (o: typeof opportunities[number]) => setModal({ title: o.title, text: o.description, detail: <div className="space-y-4 text-sm">
+    <div className="flex flex-wrap gap-2">{[o.company, o.location, o.type].map(t => <span key={t} className="rounded-full bg-muted px-3 py-1">{t}</span>)}</div>
+    <p><strong>{o.rate} / hour</strong> <span className="text-muted-foreground">· illustrative</span></p>
+    <p className="text-muted-foreground">Skills: {o.skills.join(' · ')}</p>
+    <p className="rounded-lg border-l-2 border-coral bg-coral-soft p-3 leading-relaxed">This is sample content, not a live listing. Always check a platform's eligibility, pay terms and legitimacy before applying.</p>
+  </div> });
+
+  return <div id="home" className="bg-background text-foreground">
+    <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
+      <div className="section-shell flex h-[72px] items-center justify-between gap-4">
+        <button onClick={() => go('home')} aria-label="AI FLEX Connect home"><Brand /></button>
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 xl:flex">
+          {nav.map(n => n.name === 'Join + Register'
+            ? <Button key={n.name} size="sm" className="ml-2 rounded-full" onClick={n.act}>{n.name}</Button>
+            : <button key={n.name} onClick={n.act} className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{n.name}</button>)}
+        </nav>
+        <Button size="icon" variant="ghost" className="xl:hidden" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
       </div>
-      {menuOpen && <nav aria-label="Mobile navigation" className="section-shell grid gap-1 border-t border-border py-4 lg:hidden">{nav.map(item => <Button key={item.name} variant="ghost" className="justify-start" onClick={() => scrollTo(item.id)}>{item.name}</Button>)}{['Join', 'Register'].map(name => <Button key={name} variant="ghost" className="justify-start" onClick={() => membership(name)}>{name}</Button>)}<Button variant="ghost" className="justify-start" onClick={() => { setMenuOpen(false); setModal({ title: 'About AI FLEX Connect', text: 'Your connection to AI work, training platforms, learning resources and AI-work updates.' }); }}>About</Button></nav>}
+      {menuOpen && <nav aria-label="Mobile navigation" className="section-shell grid gap-1 border-t border-border py-3 xl:hidden">{nav.map(n => <Button key={n.name} variant="ghost" className="justify-start" onClick={n.act}>{n.name}</Button>)}</nav>}
     </header>
 
     <main>
-      <section className="relative isolate overflow-hidden bg-ink text-on-dark">
-        <img src={heroImage} alt="A glass AI processor connected by gold circuits" className="hero-image" width={1600} height={800} fetchPriority="high" />
-        <div className="hero-shade absolute inset-0" />
-        <div className="section-shell hero-enter relative py-14 sm:py-[68px]">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-ink-muted/70 px-3 py-1.5 text-[10px] font-semibold tracking-[0.1em] text-primary"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> YOUR NEXT OPPORTUNITY STARTS HERE</div>
-          <h1 className="display-heading max-w-[660px] text-[38px] leading-[1.15] sm:text-[52px]">Real AI work.<br />Real opportunities.<br /><span className="text-primary">Your next move.</span></h1>
-          <p className="mt-5 max-w-[480px] text-sm leading-7 text-on-dark-muted sm:text-[15px]">Discover legitimate AI work, explore leading platforms, and build the skills to move forward. Welcome to <span className="font-medium text-on-dark">AI FLEX Connect.</span></p>
-          <div className="mt-7 flex flex-wrap items-center gap-4"><Button className="h-12 px-6" onClick={() => scrollTo('discovery')}>Explore AI Work <ArrowUpRight /></Button><Button variant="ghost" className="h-12 text-on-dark hover:bg-ink-muted hover:text-on-dark" onClick={() => scrollTo('learning')}>Build your AI skills <ArrowRight /></Button></div>
-          <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-xs text-on-dark-muted"><span className="flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Opportunity-first discovery</span><span className="flex items-center gap-2"><Globe2 size={15} className="text-primary" /> A global perspective</span><span className="flex items-center gap-2"><GraduationCap size={16} className="text-primary" /> Learn as you grow</span></div>
-        </div>
-        <div className="relative border-t border-on-dark/10 bg-ink/80"><div className="section-shell flex flex-wrap items-center justify-between gap-4 py-5"><p className="text-xs text-on-dark-muted">Your connection to the evolving world of AI work</p><div className="flex gap-5 text-xs font-medium text-on-dark sm:gap-9"><span>AI training</span><span>Human expertise</span><span>Flexible work</span></div></div></div>
-      </section>
-
-      <section id="discovery" className="scroll-mt-6 border-b border-border bg-card py-9">
-        <div className="section-shell"><div className="mb-5 flex items-center gap-3"><Search size={20} /><h2 className="display-heading text-xl">Find where you fit.</h2><span className="ml-auto hidden text-xs text-muted-foreground sm:block">One search. A world of AI opportunities.</span></div>
-          <form className="grid gap-3 md:grid-cols-[minmax(0,1.8fr)_1fr_1fr_auto]" onSubmit={event => { event.preventDefault(); setShowAll(true); scrollTo('featured'); }}>
-            <div className="flex h-12 min-w-0 items-center gap-3 rounded-md border border-input bg-background px-4"><Search size={18} className="shrink-0 text-muted-foreground" /><input className="w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-muted-foreground" aria-label="Search AI opportunities" placeholder="Job title, keyword, or platform" value={query} onChange={event => setQuery(event.target.value)} /></div>
-            <div className="relative flex items-center gap-2 rounded-md border border-input bg-background px-3"><Layers3 size={16} className="shrink-0 text-muted-foreground" /><select aria-label="Work category" value={category} onChange={event => setCategory(event.target.value)} className="h-12 w-full min-w-0 appearance-none bg-transparent pr-5 text-sm outline-none">{['All categories', ...categories].map(option => <option key={option}>{option}</option>)}</select><ChevronDown size={14} className="pointer-events-none absolute right-3" /></div>
-            <div className="relative flex items-center gap-2 rounded-md border border-input bg-background px-3"><MapPin size={16} className="shrink-0 text-muted-foreground" /><select aria-label="Work location" value={location} onChange={event => setLocation(event.target.value)} className="h-12 w-full min-w-0 appearance-none bg-transparent pr-5 text-sm outline-none">{['All locations', 'Worldwide', 'United States', 'United Kingdom'].map(option => <option key={option}>{option}</option>)}</select><ChevronDown size={14} className="pointer-events-none absolute right-3" /></div>
-            <Button type="submit" className="h-12 px-6"><Search /> Find AI Work</Button>
-          </form>
-          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"><span className="text-muted-foreground">Popular searches:</span>{['AI Trainer', 'LLM Evaluation', 'Data Annotation'].map(name => <Button key={name} variant="ghost" size="sm" className="h-6 px-1 text-xs text-muted-foreground" onClick={() => { setCategory(name); scrollTo('featured'); }}>{name}</Button>)}</div>
+      {/* Hero */}
+      <section className="hero-field overflow-hidden">
+        <div className="section-shell grid items-center gap-12 py-16 md:grid-cols-[1.1fr_1fr] md:py-24">
+          <div className="hero-enter">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1.5 text-xs font-semibold text-foreground"><span className="h-1.5 w-1.5 rounded-full bg-coral" /> Information · Opportunity · Learning</p>
+            <h1 className="display-heading text-[40px] leading-[1.08] sm:text-[58px]">Find Your Place in the <span className="relative whitespace-nowrap">AI Work<span className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded bg-primary/50" /></span> Economy</h1>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">AI FLEX Connect helps you discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms — all in one clear, trustworthy place.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button size="lg" className="h-12 rounded-full px-7 glow-gold" onClick={() => go('find')}>Find AI Work <ArrowRight /></Button>
+              <Button size="lg" variant="outline" className="h-12 rounded-full px-7" onClick={() => go('learning')}><BookOpen /> Start Learning</Button>
+            </div>
+          </div>
+          <HeroGraphic />
         </div>
       </section>
 
-      <section id="featured" className="section-space scroll-mt-6"><div className="section-shell">
-        <SectionHeading eyebrow="YOUR NEXT CHAPTER" title={hasFilters ? 'Matching AI Work' : 'Featured AI Work'} subtitle="Meaningful work at the intersection of human expertise and AI." action={<Button variant="ghost" className="hidden text-xs sm:inline-flex" onClick={() => { resetFilters(); setShowAll(!showAll); }}>{showAll ? 'Show featured' : 'View all opportunities'} <ArrowRight /></Button>} />
-        <div className="mb-4 flex items-center gap-2 text-[11px] text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-coral" /> Sample opportunities · For discovery purposes only {hasFilters && <Button variant="link" size="sm" className="ml-auto text-foreground" onClick={resetFilters}>Clear filters</Button>}</div>
-        <div className="grid gap-5 md:grid-cols-3">{visible.map(item => <article key={item.id} className="opportunity-card flex min-w-0 flex-col rounded-lg border border-border bg-card p-6">
-          <div className="mb-5 flex items-center gap-3"><span className={`tone-${item.tone} grid h-11 w-11 shrink-0 place-items-center rounded-md font-display text-xl font-extrabold`}>{item.mark}</span><div className="min-w-0"><p className="truncate text-sm font-semibold">{item.company}</p><p className="mt-1 text-[11px] text-muted-foreground">AI training platform</p></div><Button variant="ghost" size="icon" className="ml-auto shrink-0 text-muted-foreground" aria-label={`${saved.includes(item.id) ? 'Unsave' : 'Save'} ${item.title}`} title={saved.includes(item.id) ? 'Remove saved opportunity' : 'Save opportunity'} onClick={() => setSaved(previous => previous.includes(item.id) ? previous.filter(id => id !== item.id) : [...previous, item.id])}><Bookmark className={saved.includes(item.id) ? 'fill-primary text-foreground' : ''} /></Button></div>
-          <div className="mb-3 flex flex-wrap gap-2"><span className="rounded bg-muted px-2 py-1 text-[10px] font-medium">{item.category}</span>{item.featured && <span className="rounded bg-gold-soft px-2 py-1 text-[10px] font-semibold">Featured</span>}</div>
-          <h3 className="font-display text-lg font-bold leading-7">{item.title}</h3><p className="mt-3 text-xs leading-6 text-muted-foreground">{item.description}</p>
-          <div className="my-4 flex flex-wrap gap-3 text-[11px] text-muted-foreground"><span className="flex items-center gap-1"><Globe2 size={13} />{item.location}</span><span className="flex items-center gap-1"><Clock3 size={13} />{item.type}</span></div>
-          <div className="mt-auto flex items-center justify-between border-t border-border pt-4"><p className="text-base font-bold">{item.rate}<span className="text-[11px] font-normal text-muted-foreground"> / hour</span></p><Button variant="ghost" size="sm" className="-mr-2 text-xs" onClick={() => detail(item)}>View opportunity <ArrowUpRight /></Button></div>
-        </article>)}</div>
-        {visible.length === 0 && <div className="py-10 text-center"><Search className="mx-auto mb-3 text-muted-foreground" /><h3 className="font-semibold">No opportunities match just yet.</h3><p className="mt-2 text-sm text-muted-foreground">Try a different keyword, category or location.</p><Button variant="outline" className="mt-4" onClick={resetFilters}>Clear filters</Button></div>}
-        <Button variant="outline" className="mt-5 w-full sm:hidden" onClick={() => { resetFilters(); setShowAll(!showAll); }}>{showAll ? 'Show featured opportunities' : 'View all opportunities'} <ArrowRight /></Button>
-      </div></section>
+      {/* Find AI Work */}
+      <section id="find" className="scroll-mt-20 relative z-10 -mt-6">
+        <div className="section-shell rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-10">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search sample roles by skill, title or platform.</p></div>
+            <span className="text-sm text-muted-foreground"><strong className="text-foreground">{filtered.length}</strong> matching opportunities</span>
+          </div>
+          <div className="grid gap-3 md:grid-cols-[1fr_200px_180px_auto]">
+            <label className="flex h-14 items-center gap-3 rounded-2xl border border-input bg-background px-4 focus-within:border-primary"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="e.g. writing, Python, evaluation" aria-label="Search AI work" className="w-full bg-transparent outline-none placeholder:text-muted-foreground" /></label>
+            <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category" className="h-14 rounded-2xl border border-input bg-background px-4">{['All', ...categories].map(c => <option key={c} value={c}>{c === 'All' ? 'All categories' : c}</option>)}</select>
+            <select value={location} onChange={e => setLocation(e.target.value)} aria-label="Location" className="h-14 rounded-2xl border border-input bg-background px-4">{locations.map(l => <option key={l}>{l}</option>)}</select>
+            <Button className="h-14 rounded-2xl px-7" onClick={() => go('featured')}>Search</Button>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs">{['Writing', 'Coding', 'Research', 'Annotation'].map(t => <button key={t} onClick={() => setQuery(t)} className="rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:border-primary hover:text-foreground">{t}</button>)}</div>
+        </div>
+      </section>
 
-      <section id="categories" className="section-space border-y border-border bg-muted"><div className="section-shell"><SectionHeading eyebrow="DIFFERENT SKILLS. SHARED POSSIBILITIES." title="There’s more than one way to work in AI." subtitle="Explore opportunities that align with what you do best." /><div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">{categories.map((name, i) => { const Icon = categoryIcons[i]; return <Button key={name} variant="outline" className="group h-auto min-h-[132px] flex-col items-start gap-4 whitespace-normal bg-card p-5 text-left" onClick={() => { setCategory(name); setQuery(''); setLocation('All locations'); scrollTo('featured'); }}>{Icon && <Icon size={24} className="!h-6 !w-6 text-muted-foreground" />}<div className="flex w-full items-center justify-between gap-2"><span className="text-sm font-semibold">{name}</span><ArrowUpRight className="shrink-0 text-muted-foreground group-hover:text-foreground" /></div></Button>; })}</div></div></section>
+      {/* Categories */}
+      <section id="categories" className="section-space scroll-mt-20">
+        <div className="section-shell">
+          <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c]; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
+              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
+              <span className="flex-1"><span className="flex items-center justify-between font-display text-lg font-bold">{c}<ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span><span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span></span>
+            </button>; })}
+          </div>
+        </div>
+      </section>
 
-      <section id="platforms" className="section-space scroll-mt-6"><div className="section-shell"><SectionHeading eyebrow="MEET THE PLATFORMS" title="Your skills. Their next breakthrough." subtitle="Discover the platforms connecting human talent with AI projects." action={<Button variant="ghost" className="hidden text-xs sm:inline-flex" onClick={() => setModal({ title: 'Explore AI training platforms', text: 'Outlier, TELUS Digital and Alignerr are examples of platforms in the AI-work ecosystem. Explore each preview below to learn about their focus. These descriptions are sample content; project availability and eligibility are not verified.' })}>Explore platforms <ArrowRight /></Button>} /><div className="grid gap-5 md:grid-cols-3">{platforms.map(item => <article key={item.name} className="rounded-lg border border-border bg-card p-6"><div className="flex items-center gap-3"><span className={`tone-${item.tone} grid h-11 w-11 place-items-center rounded-md font-display text-xl font-extrabold`}>{item.mark}</span><div><h3 className="font-display font-bold">{item.name}</h3><p className="mt-1 text-[11px] text-muted-foreground">{item.subtitle}</p></div></div><p className="mt-5 text-sm leading-6 text-muted-foreground">{item.text}</p><p className="mt-4 text-[11px] text-muted-foreground">{item.tags}</p><Button variant="ghost" className="-ml-3 mt-3 text-xs" onClick={() => setModal({ title: item.name, text: item.text, detail: <p className="text-sm leading-6 text-muted-foreground">Sample platform overview. Confirm current project availability, geographic eligibility and payment terms directly with the platform before applying.</p> })}>Discover platform <ArrowUpRight /></Button></article>)}</div></div></section>
+      {/* Featured */}
+      <section id="featured" className="section-space scroll-mt-20 bg-muted">
+        <div className="section-shell">
+          <Heading label="Opportunities" title="Featured Opportunities" text="Sample roles to show what AI work can look like." action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
+          {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No sample opportunities match yet — try another search.</p> :
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.map(o => <article key={o.id} className="lift flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
+              <div className={`h-1.5 ${o.featured ? 'bg-primary' : 'bg-border'}`} />
+              <div className="flex flex-1 flex-col p-6">
+                <div className="flex items-center justify-between text-xs"><span className="font-semibold uppercase tracking-wider text-muted-foreground">{o.category}</span>{o.featured && <span className="rounded-full bg-coral-soft px-2.5 py-1 font-semibold text-coral">Featured</span>}</div>
+                <h3 className="mt-3 font-display text-xl font-bold leading-snug">{o.title}</h3>
+                <p className="mt-1 text-sm font-medium text-muted-foreground">{o.company}</p>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{o.description}</p>
+                <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"><span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{o.location}</span><span className="flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" />{o.type}</span></div>
+                <div className="mt-5 flex items-center justify-between border-t border-border pt-4"><span className="font-display font-bold">{o.rate}<span className="text-xs font-normal text-muted-foreground"> /hr</span></span><button onClick={() => openDetail(o)} className="flex items-center gap-1 text-sm font-semibold hover:text-coral">Learn more <ArrowRight className="h-4 w-4" /></button></div>
+              </div>
+            </article>)}
+          </div>}
+        </div>
+      </section>
 
-      <section id="learning" className="section-space scroll-mt-6 border-y border-border bg-muted"><div className="section-shell"><SectionHeading eyebrow="LEARN TODAY. GO FURTHER TOMORROW." title="Build your confidence in AI work." subtitle="Practical resources for your first project—and your next step." action={<Button variant="ghost" className="hidden text-xs sm:inline-flex" onClick={() => setModal({ title: 'Learning at AI FLEX Connect', text: 'Explore getting-started guides, evaluation fundamentals and practical writing resources. The learning library is coming in a future phase; these are sample previews.' })}>Explore learning <ArrowRight /></Button>} /><div className="grid gap-5 md:grid-cols-3">{lessons.map((lesson, i) => <article key={lesson.title} className="overflow-hidden rounded-lg border border-border bg-card"><div className={`tone-${['gold', 'mint', 'coral'][i]} flex h-[115px] items-center justify-between px-6`}><span className="section-label max-w-32 leading-5">{lesson.category}</span>{i === 0 ? <GraduationCap size={48} strokeWidth={1.2} /> : i === 1 ? <BrainCircuit size={48} strokeWidth={1.2} /> : <Code2 size={48} strokeWidth={1.2} />}</div><div className="p-6"><h3 className="font-display text-lg font-bold">{lesson.title}</h3><p className="mt-3 text-xs leading-6 text-muted-foreground">{lesson.text}</p><div className="mt-5 flex items-center justify-between"><span className="flex items-center gap-1.5 text-[11px] text-muted-foreground"><Clock3 size={13} />{lesson.duration}</span><Button variant="ghost" size="sm" className="-mr-2 text-xs" onClick={() => setModal({ title: lesson.title, text: lesson.text, detail: <div className="space-y-3 text-sm leading-6 text-muted-foreground"><p>{i === 0 ? 'Start by identifying your strengths: writing, coding, language skills or specialist knowledge. Compare role requirements with your experience, then review platform eligibility and project terms.' : i === 1 ? 'Good evaluation begins with a clear rubric. Check factual accuracy, relevance to the question and consistency of reasoning. Explain your judgement with specific examples rather than general impressions.' : 'Write instructions with a clear goal and the context needed to complete the task. Use precise language, check your examples and avoid ambiguous requirements.'}</p><p className="border-t border-border pt-3 text-xs">Sample learning resource · Full guides coming soon.</p></div> })}>Read guide <ArrowUpRight /></Button></div></div></article>)}</div></div></section>
+      {/* Platforms */}
+      <section id="platforms" className="section-space scroll-mt-20">
+        <div className="section-shell">
+          <Heading label="Where the work is" title="AI Platforms" text="A small preview of platforms people use for AI training work." />
+          <div className="grid gap-4 md:grid-cols-3">
+            {platforms.map(p => <div key={p.name} className="rounded-2xl border border-border p-6">
+              <div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-full border-2 border-primary font-display font-bold">{p.mark}</span><div><h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-muted-foreground">{p.subtitle}</p></div></div>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+              <p className="mt-4 text-xs font-semibold text-foreground">{p.tags}</p>
+            </div>)}
+          </div>
+        </div>
+      </section>
 
-      <section id="updates" className="section-space scroll-mt-6"><div className="section-shell"><SectionHeading eyebrow="STAY IN THE KNOW" title="What’s happening in AI work." subtitle="Fresh perspectives, emerging opportunities and the things worth knowing." /><div className="grid gap-7 md:grid-cols-3">{updates.map((item, i) => <article key={item.title} className="border-t-2 border-border pt-5"><div className="flex items-center justify-between gap-2 text-[10px]"><span className={i === 0 ? 'font-bold text-coral' : 'font-bold text-muted-foreground'}>{item.label}</span><span className="text-muted-foreground">{item.date}</span></div><h3 className="mt-4 font-display text-lg font-bold leading-7">{item.title}</h3><p className="mt-3 text-xs leading-6 text-muted-foreground">{item.text}</p><Button variant="ghost" className="-ml-3 mt-3 text-xs" onClick={() => setModal({ title: item.title, text: item.text, detail: <p className="text-sm leading-6 text-muted-foreground">{i === 0 ? 'AI evaluation can include rating search results, reviewing model responses or checking factual accuracy. Compare requirements carefully: each project has its own geographic, language and experience criteria.' : i === 1 ? 'Specialist knowledge, cultural context and sound judgement help expose the gaps that automated checks may miss. Thoughtful human feedback remains a valuable part of training and evaluating models.' : 'Check the official platform address, read the payment terms and verify eligibility. Be cautious of upfront fees or guaranteed earnings. Never share sensitive information with unverified recruiters.'}<br /><br />Sample editorial update · Not a verified industry report.</p> })}>Read update <ArrowUpRight /></Button></article>)}</div></div></section>
+      {/* Learning */}
+      <section id="learning" className="section-space scroll-mt-20 bg-muted">
+        <div className="section-shell">
+          <Heading label="AI Learning" title="Learn About AI Work" text="Short, practical guides to help you start with confidence." />
+          <div className="grid gap-5 md:grid-cols-3">
+            {lessons.map((l, i) => <button key={l.title} onClick={() => setModal({ title: l.title, text: `${l.text} Full lessons will be available to members soon.` })} className="lift rounded-2xl border border-border bg-card p-7 text-left">
+              <span className="font-display text-5xl font-extrabold text-primary">0{i + 1}</span>
+              <p className="section-label mt-4 text-coral">{l.category}</p>
+              <h3 className="mt-2 font-display text-xl font-bold">{l.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{l.text}</p>
+              <p className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="h-3.5 w-3.5" />{l.duration}</p>
+            </button>)}
+          </div>
+        </div>
+      </section>
 
-      <section id="join" className="relative overflow-hidden bg-ink text-on-dark"><div className="section-shell grid gap-8 py-12 md:grid-cols-[minmax(0,1fr)_auto] md:items-center sm:py-14"><div className="min-w-0"><p className="section-label mb-3 text-primary">GOOD CONNECTIONS. GREATER POSSIBILITIES.</p><h2 className="display-heading text-[28px] sm:text-[34px]">Don’t just follow AI.<br />Find your place in it.</h2><p className="mt-4 max-w-[610px] text-sm leading-7 text-on-dark-muted">Join AI FLEX Connect for additional AI training, practical tips and resources. Stay connected to opportunities that help you move forward.</p><div className="mt-5 flex flex-wrap gap-5 text-xs text-on-dark-muted">{['AI training resources', 'Practical tips', 'Work updates'].map(text => <span key={text} className="flex items-center gap-2"><Check size={14} className="text-primary" />{text}</span>)}</div></div><div className="flex flex-col items-start gap-3 md:items-center"><Button className="h-12 px-8" onClick={() => membership('Join')}>Join AI FLEX Connect <ArrowUpRight /></Button><p className="text-xs text-on-dark-muted">Ready to get started? <Button variant="link" className="h-auto p-0 text-xs text-on-dark" onClick={() => membership('Register')}>Register <ArrowRight /></Button></p></div></div></section>
+      {/* Updates */}
+      <section id="updates" className="section-space scroll-mt-20">
+        <div className="section-shell">
+          <Heading label="Stay informed" title="AI Updates" />
+          <div className="divide-y divide-border rounded-2xl border border-border">
+            {updates.map(u => <button key={u.title} onClick={() => setModal({ title: u.title, text: u.text })} className="group grid w-full gap-2 p-6 text-left transition-colors hover:bg-muted sm:grid-cols-[140px_1fr_auto] sm:items-center sm:gap-6">
+              <span className="text-xs text-muted-foreground">{u.date}</span>
+              <span><span className="section-label text-coral">{u.label}</span><span className="mt-1 block font-display text-lg font-bold">{u.title}</span><span className="mt-1 block text-sm text-muted-foreground">{u.text}</span></span>
+              <ArrowUpRight className="hidden h-5 w-5 text-muted-foreground group-hover:text-foreground sm:block" />
+            </button>)}
+          </div>
+        </div>
+      </section>
+
+      {/* Join */}
+      <section id="join" className="scroll-mt-20 pb-20">
+        <div className="section-shell hero-field grid items-center gap-8 rounded-3xl border border-border p-8 sm:p-14 md:grid-cols-[1.4fr_1fr]">
+          <div>
+            <p className="section-label mb-3 text-coral">Join + Register</p>
+            <h2 className="display-heading text-3xl sm:text-4xl">Grow with the AI FLEX Connect community</h2>
+            <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground">Members will receive additional AI training, practical tips and resources to help them navigate AI work with confidence.</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Button size="lg" className="h-12 rounded-full glow-gold" onClick={() => setModal({ title: 'Join AI FLEX Connect', text: 'Membership is coming soon. Members will receive additional AI training, tips and resources.' })}>Join now <ArrowRight /></Button>
+            <Button size="lg" variant="outline" className="h-12 rounded-full bg-card" onClick={() => setModal({ title: 'Register', text: 'Registration is coming soon. No account details are collected yet.' })}>Register</Button>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer className="border-t border-on-dark/10 bg-ink text-on-dark"><div className="section-shell grid gap-8 py-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]"><div><Brand dark /><p className="mt-4 max-w-64 text-xs leading-6 text-on-dark-muted">Connecting human potential with the possibilities of AI.</p></div><div><h3 className="mb-3 text-xs font-semibold">Discover</h3>{nav.slice(1, 3).map(item => <Button key={item.name} variant="ghost" className="nav-control -ml-3 flex h-8 text-xs text-on-dark-muted" onClick={() => scrollTo(item.id)}>{item.name}</Button>)}<Button variant="ghost" className="nav-control -ml-3 text-xs text-on-dark-muted" onClick={() => scrollTo('categories')}>AI Work Categories</Button></div><div><h3 className="mb-3 text-xs font-semibold">Grow</h3>{nav.slice(3).map(item => <Button key={item.name} variant="ghost" className="nav-control -ml-3 flex h-8 text-xs text-on-dark-muted" onClick={() => scrollTo(item.id)}>{item.name}</Button>)}<Button variant="ghost" className="nav-control -ml-3 text-xs text-on-dark-muted" onClick={() => membership('Join')}>Join the community</Button></div><div><h3 className="mb-3 text-xs font-semibold">AI FLEX Connect</h3><Button variant="ghost" className="nav-control -ml-3 flex h-8 text-xs text-on-dark-muted" onClick={() => setModal({ title: 'About AI FLEX Connect', text: 'A professional discovery space for AI work, platforms, learning and updates. Built around human expertise and the opportunities it creates.' })}>About us</Button><Button variant="ghost" className="nav-control -ml-3 flex h-8 text-xs text-on-dark-muted" onClick={() => membership('Register')}>Register</Button><span className="mt-3 inline-flex items-center gap-2 text-[10px] text-on-dark-muted"><Sparkles size={12} className="text-primary" /> Human potential. AI possibilities.</span></div></div><div className="section-shell flex flex-wrap justify-between gap-3 border-t border-on-dark/10 py-5 text-[10px] text-on-dark-muted"><p>© 2026 AI FLEX Connect. All rights reserved.</p><p>Preview edition · All opportunities and resources are sample content.</p></div></footer>
+    <footer className="border-t border-border">
+      <div className="section-shell flex flex-wrap items-center justify-between gap-6 py-10 text-sm text-muted-foreground">
+        <Brand />
+        <div className="flex flex-wrap gap-5">{nav.slice(1).map(n => <button key={n.name} onClick={n.act} className="hover:text-foreground">{n.name}</button>)}</div>
+        <p>© 2026 AI FLEX Connect · Sample content</p>
+      </div>
+    </footer>
 
-    <Dialog open={modal !== null} onOpenChange={open => { if (!open) setModal(null); }}><DialogContent className="max-h-[85dvh] max-w-[calc(100%-32px)] overflow-y-auto rounded-lg sm:max-w-lg"><DialogHeader><div className="mb-3"><span className="brand-mark">{modal?.kind === 'membership' ? <Users size={20} /> : <Zap size={20} />}</span></div><DialogTitle className="font-display text-2xl leading-8">{modal?.title}</DialogTitle><DialogDescription className="pt-2 leading-6">{modal?.text}</DialogDescription></DialogHeader>{modal?.detail}{modal?.kind === 'membership' && <div className="rounded-md border border-border bg-gold-soft p-4 text-sm leading-6"><p className="font-semibold">Membership is coming soon.</p><p className="mt-1 text-muted-foreground">Registration is not open yet. No account or personal information is collected in this preview.</p></div>}<Button variant="outline" className="mt-2" onClick={() => setModal(null)}>Back to exploring <ArrowRight /></Button></DialogContent></Dialog>
+    <Dialog open={!!modal} onOpenChange={o => !o && setModal(null)}>
+      <DialogContent>
+        <DialogHeader><DialogTitle className="font-display text-xl">{modal?.title}</DialogTitle><DialogDescription className="leading-relaxed">{modal?.text}</DialogDescription></DialogHeader>
+        {modal?.detail}
+      </DialogContent>
+    </Dialog>
   </div>;
 }
