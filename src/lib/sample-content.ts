@@ -1,4 +1,4 @@
-export const categories = ['AI Trainer', 'AI Evaluator', 'LLM Evaluation', 'Data Annotation', 'AI Research'];
+export const categories = ['AI Trainer', 'AI Evaluator', 'LLM Evaluation', 'Data Annotation', 'AI Research', 'AI Safety'];
 
 export const opportunities = [
   { id: 1, company: 'Outlier', mark: 'O', tone: 'gold', title: 'AI Writing & Language Trainer', category: 'AI Trainer', location: 'Worldwide', type: 'Freelance', rate: '$15–$35', description: 'Help improve the next generation of AI through thoughtful writing and expert feedback.', skills: ['English', 'Writing', 'AI training'], featured: true },
