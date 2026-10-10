@@ -28,6 +28,7 @@
   --color-gold-soft: var(--gold-soft);
   --color-coral: var(--coral);
   --color-coral-soft: var(--coral-soft);
+  --color-coral-soft-foreground: var(--coral-soft-foreground);
   --color-mint: var(--mint);
   --color-mint-soft: var(--mint-soft);
   --radius-sm: calc(var(--radius) - 4px);
@@ -81,8 +82,9 @@
   --on-dark: oklch(0.99 0.002 90);
   --on-dark-muted: oklch(0.86 0.005 90);
   --gold-soft: oklch(0.96 0.045 88);
-  --coral: oklch(0.6 0.18 25);
-  --coral-soft: oklch(0.965 0.022 25);
+  --coral: oklch(0.62 0.19 30);
+  --coral-soft: oklch(0.955 0.03 30);
+  --coral-soft-foreground: oklch(0.72 0.13 30);
   --mint: oklch(0.45 0.008 70);
   --mint-soft: oklch(0.955 0.003 90);
   --glow: oklch(0.82 0.15 85 / 0.35);

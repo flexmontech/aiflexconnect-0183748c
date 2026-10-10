@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, CheckCheck, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, CheckCheck, ChevronDown, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
@@ -69,12 +69,25 @@ function Index() {
   const [modal, setModal] = useState<Modal>(null);
 
   const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
-  const about = () => { setMenuOpen(false); setModal({ title: 'About AI FLEX Connect', text: 'AI FLEX Connect is an information and opportunity platform that helps people discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms.' }); };
-  const nav = [
-    { name: 'Home', act: () => go('home') }, { name: 'About', act: about }, { name: 'AI Work', act: () => go('find') },
-    { name: 'AI Platforms', act: () => go('platforms') }, { name: 'AI Learning', act: () => go('learning') },
-    { name: 'AI Updates', act: () => go('updates') }, { name: 'Join + Register', act: () => go('join') },
+  const soon = (title: string) => { setMenuOpen(false); setModal({ title, text: 'This section is coming soon. AI FLEX Connect is currently a preview edition with sample content.' }); };
+
+  const navGroups = [
+    { name: 'AI Work', act: () => go('find'), subs: [
+      { name: 'Jobs', act: () => go('featured') },
+      { name: 'Referrals', act: () => soon('Referrals') },
+    ] },
+    { name: 'AI Dev Platforms', act: () => go('platforms'), subs: [
+      { name: 'Companies', act: () => go('platforms') },
+      { name: 'AI Updates', act: () => go('updates') },
+    ] },
+    { name: 'AI Learning', act: () => go('learning'), subs: [
+      { name: 'AI Tools', act: () => soon('AI Tools') },
+      { name: 'AI Models', act: () => soon('AI Models') },
+      { name: 'AI Update', act: () => go('updates') },
+      { name: 'AI Educate', act: () => go('learning') },
+    ] },
   ];
+
   const locations = ['All locations', ...Array.from(new Set(opportunities.map(o => o.location)))];
   const filtered = opportunities.filter(o => (category === 'All' || o.category === category) && (location === 'All locations' || o.location === location) && `${o.title} ${o.company} ${o.skills.join(' ')}`.toLowerCase().includes(query.toLowerCase().trim()));
   const pickCategory = (c: string) => { setCategory(c); go('featured'); };
@@ -89,30 +102,46 @@ function Index() {
     <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
       <div className="section-shell flex h-[72px] items-center justify-between gap-4">
         <button onClick={() => go('home')} aria-label="AI FLEX Connect home"><Brand /></button>
-        <nav aria-label="Main navigation" className="hidden items-center gap-1 xl:flex">
-          {nav.map(n => n.name === 'Join + Register'
-            ? <Button key={n.name} size="sm" className="ml-2 rounded-full" onClick={n.act}>{n.name}</Button>
-            : <button key={n.name} onClick={n.act} className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{n.name}</button>)}
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
+          {navGroups.map(g => <div key={g.name} className="group relative">
+            <button onClick={g.act} className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+              {g.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
+            </button>
+            <div className="invisible absolute left-0 top-full z-40 min-w-[180px] translate-y-1 rounded-2xl border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              {g.subs.map(s => <button key={s.name} onClick={s.act} className="block w-full rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{s.name}</button>)}
+            </div>
+          </div>)}
+          <Button size="sm" className="ml-2 rounded-full" onClick={() => go('join')}>Join</Button>
         </nav>
-        <Button size="icon" variant="ghost" className="xl:hidden" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
+        <Button size="icon" variant="ghost" className="lg:hidden" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
       </div>
-      {menuOpen && <nav aria-label="Mobile navigation" className="section-shell grid gap-1 border-t border-border py-3 xl:hidden">{nav.map(n => <Button key={n.name} variant="ghost" className="justify-start" onClick={n.act}>{n.name}</Button>)}</nav>}
+      {menuOpen && <nav aria-label="Mobile navigation" className="section-shell grid gap-1 border-t border-border py-3 lg:hidden">
+        {navGroups.map(g => <div key={g.name}>
+          <button onClick={g.act} className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold hover:bg-muted">{g.name}</button>
+          <div className="grid gap-0.5 pb-1 pl-4">{g.subs.map(s => <button key={s.name} onClick={s.act} className="rounded-lg px-3 py-1.5 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground">{s.name}</button>)}</div>
+        </div>)}
+        <Button className="mt-1 rounded-full" onClick={() => go('join')}>Join</Button>
+      </nav>}
     </header>
 
     <main>
-      {/* Hero */}
+      {/* Hero — graphic left, words right */}
       <section className="hero-field overflow-hidden">
-        <div className="section-shell grid items-center gap-12 py-16 md:grid-cols-[1.1fr_1fr] md:py-24">
+        <div className="section-shell grid items-center gap-12 py-16 md:grid-cols-[1fr_1.1fr] md:py-24">
+          <HeroGraphic />
           <div className="hero-enter">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1.5 text-xs font-semibold text-foreground"><span className="h-1.5 w-1.5 rounded-full bg-coral" /> Information · Opportunity · Learning</p>
-            <h1 className="display-heading text-[40px] leading-[1.08] sm:text-[58px]">Find Your Place in the <span className="relative whitespace-nowrap">AI Work<span className="absolute inset-x-0 bottom-1 -z-10 h-3 rounded bg-primary/50" /></span> Economy</h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">AI FLEX Connect helps you discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms — all in one clear, trustworthy place.</p>
+            <h1 className="display-heading text-[32px] leading-[1.12] sm:text-[44px]">
+              <span className="text-coral-soft-foreground">Find Your Place in the </span>
+              <span className="relative whitespace-nowrap text-coral">AI Work<span className="absolute inset-x-0 bottom-1 -z-10 h-2.5 rounded bg-primary/50" /></span>
+              <span className="text-foreground"> Economy</span>
+            </h1>
+            <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">AI FLEX Connect helps you discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms — all in one clear, trustworthy place.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" className="h-12 rounded-full px-7 glow-gold" onClick={() => go('find')}>Find AI Work <ArrowRight /></Button>
-              <Button size="lg" variant="outline" className="h-12 rounded-full px-7" onClick={() => go('learning')}><BookOpen /> Start Learning</Button>
+              <Button size="lg" className="h-12 rounded-full px-7 glow-gold" onClick={() => go('find')}>AI Jobs | Placements <ArrowRight /></Button>
+              <Button size="lg" variant="outline" className="h-12 rounded-full px-7" onClick={() => go('learning')}><BookOpen /> AI Educate | Learn</Button>
             </div>
           </div>
-          <HeroGraphic />
         </div>
       </section>
 
@@ -170,7 +199,7 @@ function Index() {
       {/* Platforms */}
       <section id="platforms" className="section-space scroll-mt-20">
         <div className="section-shell">
-          <Heading label="Where the work is" title="AI Platforms" text="A small preview of platforms people use for AI training work." />
+          <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
           <div className="grid gap-4 md:grid-cols-3">
             {platforms.map(p => <div key={p.name} className="rounded-2xl border border-border p-6">
               <div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-full border-2 border-primary font-display font-bold">{p.mark}</span><div><h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-muted-foreground">{p.subtitle}</p></div></div>
@@ -230,7 +259,10 @@ function Index() {
     <footer className="border-t border-border">
       <div className="section-shell flex flex-wrap items-center justify-between gap-6 py-10 text-sm text-muted-foreground">
         <Brand />
-        <div className="flex flex-wrap gap-5">{nav.slice(1).map(n => <button key={n.name} onClick={n.act} className="hover:text-foreground">{n.name}</button>)}</div>
+        <div className="flex flex-wrap gap-5">
+          {navGroups.map(g => <button key={g.name} onClick={g.act} className="hover:text-foreground">{g.name}</button>)}
+          <button onClick={() => go('join')} className="hover:text-foreground">Join</button>
+        </div>
         <p>© 2026 AI FLEX Connect · Sample content</p>
       </div>
     </footer>
