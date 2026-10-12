@@ -167,7 +167,7 @@ function Index() {
         <div className="section-shell">
           <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c]; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
+            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c] ?? categoryInfo['AI Trainer']!; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
               <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
               <span className="flex-1"><span className="flex items-center justify-between font-display text-lg font-bold">{c}<ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span><span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span></span>
             </button>; })}
