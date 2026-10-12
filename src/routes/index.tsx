@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, CheckCheck, ChevronDown, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
@@ -167,7 +167,7 @@ function Index() {
         <div className="section-shell">
           <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c]; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
+            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c] ?? categoryInfo['AI Trainer']!; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
               <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
               <span className="flex-1"><span className="flex items-center justify-between font-display text-lg font-bold">{c}<ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span><span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span></span>
             </button>; })}
@@ -240,32 +240,58 @@ function Index() {
         </div>
       </section>
 
-      {/* Join */}
-      <section id="join" className="scroll-mt-20 pb-20">
-        <div className="section-shell hero-field grid items-center gap-8 rounded-3xl border border-border p-8 sm:p-14 md:grid-cols-[1.4fr_1fr]">
-          <div>
-            <p className="section-label mb-3 text-coral">Join + Register</p>
-            <h2 className="display-heading text-3xl sm:text-4xl">Grow with the AI FLEX Connect community</h2>
-            <p className="mt-4 max-w-lg leading-relaxed text-muted-foreground">Members will receive additional AI training, practical tips and resources to help them navigate AI work with confidence.</p>
+      {/* Join + Footer (dark band) */}
+      <div id="join" className="scroll-mt-20 bg-ink text-on-dark">
+        <section className="section-shell section-space">
+          <p className="section-label mb-4 text-primary">Good connections. Greater possibilities.</p>
+          <div className="grid items-center gap-10 md:grid-cols-[1.5fr_1fr]">
+            <div>
+              <h2 className="display-heading text-3xl sm:text-5xl">Don't just follow AI. <span className="text-primary">Find your place in it.</span></h2>
+              <ul className="mt-8 space-y-3 text-sm text-on-dark-muted">
+                {['AI training resources', 'Practical tips', 'Work updates'].map(t => (
+                  <li key={t} className="flex items-center gap-3"><span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15"><Check className="h-3.5 w-3.5 text-primary" /></span>{t}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Button size="lg" className="h-12 rounded-full glow-gold" onClick={() => setModal({ title: 'Join AI FLEX Connect', text: 'Membership is coming soon. Members will receive additional AI training, tips and resources.' })}>Join AI FLEX Connect <ArrowUpRight /></Button>
+              <button onClick={() => setModal({ title: 'Register', text: 'Registration is coming soon. No account details are collected yet.' })} className="text-sm font-semibold text-on-dark-muted transition-colors hover:text-on-dark">Ready to get started? <span className="text-primary">Register →</span></button>
+            </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <Button size="lg" className="h-12 rounded-full glow-gold" onClick={() => setModal({ title: 'Join AI FLEX Connect', text: 'Membership is coming soon. Members will receive additional AI training, tips and resources.' })}>Join now <ArrowRight /></Button>
-            <Button size="lg" variant="outline" className="h-12 rounded-full bg-card" onClick={() => setModal({ title: 'Register', text: 'Registration is coming soon. No account details are collected yet.' })}>Register</Button>
-          </div>
-        </div>
-      </section>
-    </main>
+        </section>
 
-    <footer className="border-t border-border">
-      <div className="section-shell flex flex-wrap items-center justify-between gap-6 py-10 text-sm text-muted-foreground">
-        <Brand />
-        <div className="flex flex-wrap gap-5">
-          {navGroups.map(g => <button key={g.name} onClick={g.act} className="hover:text-foreground">{g.name}</button>)}
-          <button onClick={() => go('join')} className="hover:text-foreground">Join</button>
-        </div>
-        <p>© 2026 AI FLEX Connect · Sample content</p>
+        <footer className="border-t border-on-dark/10">
+          <div className="section-shell grid gap-10 py-14 sm:grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+            <div>
+              <span className="flex items-center gap-2.5">
+                <span className="relative grid h-9 w-9 place-items-center rounded-full bg-primary font-display text-sm font-extrabold text-primary-foreground glow-gold">AF<span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-ink bg-coral" /></span>
+                <span className="font-display text-[17px] font-bold tracking-tight text-on-dark">AI FLEX <span className="font-medium text-on-dark-muted">Connect</span></span>
+              </span>
+              <p className="mt-4 max-w-xs text-sm leading-relaxed text-on-dark-muted">Connecting human potential with the possibilities of AI.</p>
+            </div>
+            {[
+              { h: 'Discover', items: [{ t: 'AI Work', id: 'work' }, { t: 'AI Platforms', id: 'platforms' }, { t: 'AI Work Categories', id: 'categories' }] },
+              { h: 'Grow', items: [{ t: 'Learning', id: 'learning' }, { t: 'AI Work Updates', id: 'updates' }, { t: 'Join the community', id: 'join' }] },
+              { h: 'AI FLEX Connect', items: [{ t: 'About us', id: 'top' }, { t: 'Register', id: 'join' }] },
+            ].map(col => (
+              <div key={col.h}>
+                <p className="section-label mb-4 text-on-dark-muted">{col.h}</p>
+                <ul className="space-y-2.5 text-sm">
+                  {col.items.map(i => <li key={i.t}><button onClick={() => go(i.id)} className="text-on-dark-muted transition-colors hover:text-primary">{i.t}</button></li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-on-dark/10">
+            <div className="section-shell flex flex-wrap items-center justify-between gap-4 py-6 text-xs text-on-dark-muted">
+              <p className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-primary" />Human potential. AI possibilities.</p>
+              <p>© 2026 AI FLEX Connect. All rights reserved.</p>
+              <p>Preview edition · All opportunities and resources are sample content.</p>
+            </div>
+          </div>
+        </footer>
       </div>
-    </footer>
+    </main>
 
     <Dialog open={!!modal} onOpenChange={o => !o && setModal(null)}>
       <DialogContent>
