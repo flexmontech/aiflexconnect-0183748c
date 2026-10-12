@@ -13,3 +13,4 @@
 - Keep Phase 1A as a single homepage with section navigation and preview dialogs; this preserves the explicitly homepage-only scope without dead links.
 - Store sample directory content in a browser-safe data module and keep discovery state in React; the UI phase must not imply live listings or persist accounts.
 - Define all brand colors in the global semantic token system; shared tokens keep the dark and light page bands consistent.
+- Keep demo information in a browser-safe content module and open it in shared homepage dialogs; this makes menu and directory actions informative without adding accounts or backend services.

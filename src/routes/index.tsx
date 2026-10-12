@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, Ch
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
+import { demoInformation, lessonSections, updateSections } from '@/lib/demo-content';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -27,6 +28,10 @@ const categoryInfo: Record<string, { icon: typeof BrainCircuit; text: string }> 
   'AI Research': { icon: FlaskConical, text: 'Support studies on how people and AI work together.' },
   'AI Safety': { icon: ShieldCheck, text: 'Help test AI for harmful, biased or unsafe behaviour.' },
 };
+
+function InformationSections({ sections }: { sections: { heading: string; text: string }[] }) {
+  return <div className="space-y-5 py-2">{sections.map(s => <section key={s.heading}><h3 className="mb-1 font-display text-sm font-bold">{s.heading}</h3><p className="text-sm leading-relaxed text-muted-foreground">{s.text}</p></section>)}</div>;
+}
 
 function Brand() {
   return <span className="flex items-center gap-2.5">
@@ -69,20 +74,25 @@ function Index() {
   const [modal, setModal] = useState<Modal>(null);
 
   const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
-  const soon = (title: string) => { setMenuOpen(false); setModal({ title, text: 'This section is coming soon. AI FLEX Connect is currently a preview edition with sample content.' }); };
+  const showInformation = (title: string) => {
+    const information = demoInformation[title];
+    if (!information) return;
+    setMenuOpen(false);
+    setModal({ title, text: information.intro, detail: <InformationSections sections={information.sections} /> });
+  };
 
   const navGroups = [
-    { name: 'AI Work', act: () => go('find'), subs: [
+    { name: 'AI Work', act: () => showInformation('AI Work'), intro: 'Roles, skills and pathways into AI work.', subs: [
       { name: 'Jobs', act: () => go('featured') },
-      { name: 'Referrals', act: () => soon('Referrals') },
+      { name: 'Referrals', act: () => showInformation('Referrals') },
     ] },
-    { name: 'AI Dev Platforms', act: () => go('platforms'), subs: [
+    { name: 'AI Dev Platforms', act: () => showInformation('AI Dev Platforms'), intro: 'Companies, project types and industry developments.', subs: [
       { name: 'Companies', act: () => go('platforms') },
       { name: 'AI Updates', act: () => go('updates') },
     ] },
-    { name: 'AI Learning', act: () => go('learning'), subs: [
-      { name: 'AI Tools', act: () => soon('AI Tools') },
-      { name: 'AI Models', act: () => soon('AI Models') },
+    { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
+      { name: 'AI Tools', act: () => showInformation('AI Tools') },
+      { name: 'AI Models', act: () => showInformation('AI Models') },
       { name: 'AI Update', act: () => go('updates') },
       { name: 'AI Educate', act: () => go('learning') },
     ] },
@@ -95,20 +105,22 @@ function Index() {
     <div className="flex flex-wrap gap-2">{[o.company, o.location, o.type].map(t => <span key={t} className="rounded-full bg-muted px-3 py-1">{t}</span>)}</div>
     <p><strong>{o.rate} / hour</strong> <span className="text-muted-foreground">· illustrative</span></p>
     <p className="text-muted-foreground">Skills: {o.skills.join(' · ')}</p>
+    <InformationSections sections={[{ heading: 'Typical tasks', text: `Use ${o.skills.join(', ')} to review examples, follow a quality rubric and explain your decisions clearly.` }, { heading: 'Application checklist', text: 'Prepare a relevant work sample, verify location eligibility and review the official assessment and payment terms. Project availability and rates can vary.' }]} />
     <p className="rounded-lg border-l-2 border-coral bg-coral-soft p-3 leading-relaxed">This is sample content, not a live listing. Always check a platform's eligibility, pay terms and legitimacy before applying.</p>
   </div> });
 
   return <div id="home" className="bg-background text-foreground">
     <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
       <div className="section-shell flex h-[72px] items-center justify-between gap-4">
-        <button onClick={() => go('home')} aria-label="AI FLEX Connect home"><Brand /></button>
+        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent" onClick={() => go('home')} aria-label="AI FLEX Connect home"><Brand /></Button>
         <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
           {navGroups.map(g => <div key={g.name} className="group relative">
-            <button onClick={g.act} className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+            <Button variant="ghost" onClick={g.act} className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
               {g.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
-            </button>
-            <div className="invisible absolute left-0 top-full z-40 min-w-[180px] translate-y-1 rounded-2xl border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-              {g.subs.map(s => <button key={s.name} onClick={s.act} className="block w-full rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{s.name}</button>)}
+            </Button>
+            <div className="invisible absolute left-0 top-full z-40 w-[260px] translate-y-1 rounded-lg border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <p className="px-3.5 py-3 text-xs leading-relaxed text-muted-foreground">{g.intro}</p>
+              {g.subs.map(s => <Button variant="ghost" key={s.name} onClick={s.act} className="block w-full rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{s.name}</Button>)}
             </div>
           </div>)}
           <Button size="sm" className="ml-2 rounded-full" onClick={() => go('join')}>Join</Button>
@@ -117,8 +129,8 @@ function Index() {
       </div>
       {menuOpen && <nav aria-label="Mobile navigation" className="section-shell grid gap-1 border-t border-border py-3 lg:hidden">
         {navGroups.map(g => <div key={g.name}>
-          <button onClick={g.act} className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold hover:bg-muted">{g.name}</button>
-          <div className="grid gap-0.5 pb-1 pl-4">{g.subs.map(s => <button key={s.name} onClick={s.act} className="rounded-lg px-3 py-1.5 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground">{s.name}</button>)}</div>
+          <Button variant="ghost" onClick={g.act} className="w-full justify-start rounded-full px-3 py-2 text-left text-sm font-semibold hover:bg-muted">{g.name}</Button><p className="px-3 pb-2 text-xs text-muted-foreground">{g.intro}</p>
+          <div className="grid gap-0.5 pb-1 pl-4">{g.subs.map(s => <Button variant="ghost" key={s.name} onClick={s.act} className="rounded-lg px-3 py-1.5 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground">{s.name}</Button>)}</div>
         </div>)}
         <Button className="mt-1 rounded-full" onClick={() => go('join')}>Join</Button>
       </nav>}
@@ -147,18 +159,18 @@ function Index() {
 
       {/* Find AI Work */}
       <section id="find" className="scroll-mt-20 relative z-10 -mt-6">
-        <div className="section-shell rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-10">
+        <div className="section-shell border-b border-border bg-background py-10">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search sample roles by skill, title or platform.</p></div>
             <span className="text-sm text-muted-foreground"><strong className="text-foreground">{filtered.length}</strong> matching opportunities</span>
           </div>
           <div className="grid gap-3 md:grid-cols-[1fr_200px_180px_auto]">
-            <label className="flex h-14 items-center gap-3 rounded-2xl border border-input bg-background px-4 focus-within:border-primary"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="e.g. writing, Python, evaluation" aria-label="Search AI work" className="w-full bg-transparent outline-none placeholder:text-muted-foreground" /></label>
-            <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category" className="h-14 rounded-2xl border border-input bg-background px-4">{['All', ...categories].map(c => <option key={c} value={c}>{c === 'All' ? 'All categories' : c}</option>)}</select>
-            <select value={location} onChange={e => setLocation(e.target.value)} aria-label="Location" className="h-14 rounded-2xl border border-input bg-background px-4">{locations.map(l => <option key={l}>{l}</option>)}</select>
-            <Button className="h-14 rounded-2xl px-7" onClick={() => go('featured')}>Search</Button>
+            <label className="flex h-14 items-center gap-3 rounded-full border border-input bg-background px-4 focus-within:border-primary"><Search className="h-5 w-5 text-muted-foreground" /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="e.g. writing, Python, evaluation" aria-label="Search AI work" className="w-full bg-transparent outline-none placeholder:text-muted-foreground" /></label>
+            <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category" className="h-14 rounded-full border border-input bg-background px-4">{['All', ...categories].map(c => <option key={c} value={c}>{c === 'All' ? 'All categories' : c}</option>)}</select>
+            <select value={location} onChange={e => setLocation(e.target.value)} aria-label="Location" className="h-14 rounded-full border border-input bg-background px-4">{locations.map(l => <option key={l}>{l}</option>)}</select>
+            <Button className="h-14 rounded-full px-7" onClick={() => go('featured')}>Search</Button>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs">{['Writing', 'Coding', 'Research', 'Annotation'].map(t => <button key={t} onClick={() => setQuery(t)} className="rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:border-primary hover:text-foreground">{t}</button>)}</div>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs">{['Writing', 'Coding', 'Research', 'Annotation'].map(t => <Button variant="outline" key={t} onClick={() => { setQuery(t); setCategory('All'); setLocation('All locations'); go('featured'); }} className="rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:border-primary hover:text-foreground">{t}</Button>)}</div>
         </div>
       </section>
 
@@ -166,11 +178,11 @@ function Index() {
       <section id="categories" className="section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c, i) => { const { icon: Icon, text } = categoryInfo[c] ?? categoryInfo['AI Trainer']!; return <button key={c} onClick={() => pickCategory(c)} className="lift group flex items-start gap-4 rounded-2xl border border-border bg-card p-6 text-left">
-              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
-              <span className="flex-1"><span className="flex items-center justify-between font-display text-lg font-bold">{c}<ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span><span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span></span>
-            </button>; })}
+          <div className="circle-grid category-grid">
+            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile category-circle lift group">
+              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
+              <span className="font-display text-lg font-bold">{c}</span><span className="text-sm leading-relaxed text-muted-foreground">{text}</span><ArrowUpRight className="h-4 w-4 text-coral" />
+            </Button>; })}
           </div>
         </div>
       </section>
@@ -180,17 +192,14 @@ function Index() {
         <div className="section-shell">
           <Heading label="Opportunities" title="Featured Opportunities" text="Sample roles to show what AI work can look like." action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
           {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No sample opportunities match yet — try another search.</p> :
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map(o => <article key={o.id} className="lift flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
-              <div className={`h-1.5 ${o.featured ? 'bg-primary' : 'bg-border'}`} />
-              <div className="flex flex-1 flex-col p-6">
-                <div className="flex items-center justify-between text-xs"><span className="font-semibold uppercase tracking-wider text-muted-foreground">{o.category}</span>{o.featured && <span className="rounded-full bg-coral-soft px-2.5 py-1 font-semibold text-coral">Featured</span>}</div>
-                <h3 className="mt-3 font-display text-xl font-bold leading-snug">{o.title}</h3>
-                <p className="mt-1 text-sm font-medium text-muted-foreground">{o.company}</p>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{o.description}</p>
-                <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground"><span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{o.location}</span><span className="flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" />{o.type}</span></div>
-                <div className="mt-5 flex items-center justify-between border-t border-border pt-4"><span className="font-display font-bold">{o.rate}<span className="text-xs font-normal text-muted-foreground"> /hr</span></span><button onClick={() => openDetail(o)} className="flex items-center gap-1 text-sm font-semibold hover:text-coral">Learn more <ArrowRight className="h-4 w-4" /></button></div>
-              </div>
+          <div className="circle-grid">
+            {filtered.map(o => <article key={o.id} className="circle-tile opportunity-circle lift border border-border bg-card">
+              <span className="text-xs font-semibold text-coral">{o.featured ? 'Featured · ' : ''}{o.category}</span>
+              <h3 className="font-display text-lg font-bold leading-snug">{o.title}</h3>
+              <p className="text-sm font-medium text-muted-foreground">{o.company}</p>
+              <div className="flex flex-col items-center gap-1 text-xs text-muted-foreground"><span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{o.location}</span><span>{o.type}</span></div>
+              <span className="font-display text-lg font-bold">{o.rate}<span className="text-xs font-normal text-muted-foreground"> /hr</span></span>
+              <Button variant="ghost" onClick={() => openDetail(o)} className="h-8 rounded-full text-sm font-semibold">Learn more <ArrowRight /></Button>
             </article>)}
           </div>}
         </div>
@@ -200,12 +209,13 @@ function Index() {
       <section id="platforms" className="section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
-          <div className="grid gap-4 md:grid-cols-3">
-            {platforms.map(p => <div key={p.name} className="rounded-2xl border border-border p-6">
-              <div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-full border-2 border-primary font-display font-bold">{p.mark}</span><div><h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-muted-foreground">{p.subtitle}</p></div></div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
-              <p className="mt-4 text-xs font-semibold text-foreground">{p.tags}</p>
-            </div>)}
+          <div className="circle-grid">
+            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile platform-circle lift" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
+              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-primary font-display text-lg font-bold">{p.mark}</span>
+              <h3 className="font-display text-xl font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+              <span className="flex items-center gap-1 text-xs font-semibold">Explore company <ArrowUpRight /></span>
+            </Button>)}
           </div>
         </div>
       </section>
@@ -214,14 +224,13 @@ function Index() {
       <section id="learning" className="section-space scroll-mt-20 bg-muted">
         <div className="section-shell">
           <Heading label="AI Learning" title="Learn About AI Work" text="Short, practical guides to help you start with confidence." />
-          <div className="grid gap-5 md:grid-cols-3">
-            {lessons.map((l, i) => <button key={l.title} onClick={() => setModal({ title: l.title, text: `${l.text} Full lessons will be available to members soon.` })} className="lift rounded-2xl border border-border bg-card p-7 text-left">
-              <span className="font-display text-5xl font-extrabold text-primary">0{i + 1}</span>
-              <p className="section-label mt-4 text-coral">{l.category}</p>
-              <h3 className="mt-2 font-display text-xl font-bold">{l.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{l.text}</p>
-              <p className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="h-3.5 w-3.5" />{l.duration}</p>
-            </button>)}
+          <div className="circle-grid">
+            {lessons.map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <InformationSections sections={lessonSections[i] ?? []} /> })} className="circle-tile learning-circle lift bg-card">
+              <span className="font-display text-3xl font-extrabold text-primary">0{i + 1}</span>
+              <p className="text-xs font-semibold text-coral">{l.category}</p><h3 className="font-display text-xl font-bold">{l.title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{l.text}</p>
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><BookOpen className="h-3.5 w-3.5" />Read guide <ArrowRight /></span>
+            </Button>)}
           </div>
         </div>
       </section>
@@ -230,12 +239,12 @@ function Index() {
       <section id="updates" className="section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Stay informed" title="AI Updates" />
-          <div className="divide-y divide-border rounded-2xl border border-border">
-            {updates.map(u => <button key={u.title} onClick={() => setModal({ title: u.title, text: u.text })} className="group grid w-full gap-2 p-6 text-left transition-colors hover:bg-muted sm:grid-cols-[140px_1fr_auto] sm:items-center sm:gap-6">
+          <div className="divide-y divide-border">
+            {updates.map((u, i) => <Button variant="ghost" key={u.title} onClick={() => setModal({ title: u.title, text: u.text, detail: <InformationSections sections={updateSections[i] ?? []} /> })} className="group grid h-auto w-full gap-2 whitespace-normal rounded-none p-6 text-left transition-colors hover:bg-muted sm:grid-cols-[140px_1fr_auto] sm:items-center sm:gap-6">
               <span className="text-xs text-muted-foreground">{u.date}</span>
               <span><span className="section-label text-coral">{u.label}</span><span className="mt-1 block font-display text-lg font-bold">{u.title}</span><span className="mt-1 block text-sm text-muted-foreground">{u.text}</span></span>
               <ArrowUpRight className="hidden h-5 w-5 text-muted-foreground group-hover:text-foreground sm:block" />
-            </button>)}
+            </Button>)}
           </div>
         </div>
       </section>
@@ -254,8 +263,8 @@ function Index() {
               </ul>
             </div>
             <div className="flex flex-col gap-3">
-              <Button size="lg" className="h-12 rounded-full glow-gold" onClick={() => setModal({ title: 'Join AI FLEX Connect', text: 'Membership is coming soon. Members will receive additional AI training, tips and resources.' })}>Join AI FLEX Connect <ArrowUpRight /></Button>
-              <button onClick={() => setModal({ title: 'Register', text: 'Registration is coming soon. No account details are collected yet.' })} className="text-sm font-semibold text-on-dark-muted transition-colors hover:text-on-dark">Ready to get started? <span className="text-primary">Register →</span></button>
+              <Button size="lg" className="h-12 rounded-full glow-gold" onClick={() => showInformation('Join AI FLEX Connect')}>Join AI FLEX Connect <ArrowUpRight /></Button>
+              <Button variant="ghost" onClick={() => showInformation('Register')} className="text-sm font-semibold text-on-dark-muted transition-colors hover:text-on-dark">Ready to get started? <span className="text-primary">Register →</span></Button>
             </div>
           </div>
         </section>
@@ -270,14 +279,14 @@ function Index() {
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-on-dark-muted">Connecting human potential with the possibilities of AI.</p>
             </div>
             {[
-              { h: 'Discover', items: [{ t: 'AI Work', id: 'work' }, { t: 'AI Platforms', id: 'platforms' }, { t: 'AI Work Categories', id: 'categories' }] },
+              { h: 'Discover', items: [{ t: 'AI Work', id: 'find' }, { t: 'AI Platforms', id: 'platforms' }, { t: 'AI Work Categories', id: 'categories' }] },
               { h: 'Grow', items: [{ t: 'Learning', id: 'learning' }, { t: 'AI Work Updates', id: 'updates' }, { t: 'Join the community', id: 'join' }] },
-              { h: 'AI FLEX Connect', items: [{ t: 'About us', id: 'top' }, { t: 'Register', id: 'join' }] },
+              { h: 'AI FLEX Connect', items: [{ t: 'About us', id: 'about' }, { t: 'Register', id: 'join' }] },
             ].map(col => (
               <div key={col.h}>
                 <p className="section-label mb-4 text-on-dark-muted">{col.h}</p>
                 <ul className="space-y-2.5 text-sm">
-                  {col.items.map(i => <li key={i.t}><button onClick={() => go(i.id)} className="text-on-dark-muted transition-colors hover:text-primary">{i.t}</button></li>)}
+                  {col.items.map(i => <li key={i.t}><Button variant="ghost" onClick={() => i.id === 'about' ? showInformation('About us') : i.t === 'Register' || i.t === 'Join the community' ? showInformation(i.t === 'Register' ? 'Register' : 'Join AI FLEX Connect') : go(i.id)} className="h-auto justify-start p-0 text-on-dark-muted transition-colors hover:bg-transparent hover:text-primary">{i.t}</Button></li>)}
                 </ul>
               </div>
             ))}
@@ -294,7 +303,7 @@ function Index() {
     </main>
 
     <Dialog open={!!modal} onOpenChange={o => !o && setModal(null)}>
-      <DialogContent>
+      <DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader><DialogTitle className="font-display text-xl">{modal?.title}</DialogTitle><DialogDescription className="leading-relaxed">{modal?.text}</DialogDescription></DialogHeader>
         {modal?.detail}
       </DialogContent>
