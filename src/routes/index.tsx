@@ -110,12 +110,12 @@ function Index() {
   </div> });
 
   return <div id="home" className="bg-background text-foreground">
-    <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur">
-      <div className="section-shell flex h-[72px] items-center justify-between gap-4">
+    <header className="flex-band sticky top-0 z-30 border-b border-border">
+      <div className="section-shell flex h-[80px] items-center justify-between gap-4">
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent" onClick={() => go('home')} aria-label="AI FLEX Connect home"><Brand /></Button>
         <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
           {navGroups.map(g => <div key={g.name} className="group relative">
-            <Button variant="ghost" onClick={g.act} className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+            <Button variant="ghost" onClick={g.act} className="flex-nav flex items-center gap-1 rounded-full px-3.5 py-2 text-[15px] transition-colors hover:bg-transparent">
               {g.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
             <div className="invisible absolute right-0 top-full z-40 w-[260px] translate-y-1 rounded-lg border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
@@ -123,7 +123,7 @@ function Index() {
               {g.subs.map(s => <Button variant="ghost" key={s.name} onClick={s.act} className="block w-full rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{s.name}</Button>)}
             </div>
           </div>)}
-          <Button size="sm" className="ml-2 rounded-full" onClick={() => go('join')}>Join</Button>
+          <Button size="sm" className="flex-pill ml-2 px-6" onClick={() => go('join')}>Join</Button>
         </nav>
         <Button size="icon" variant="ghost" className="lg:hidden" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
       </div>
@@ -142,16 +142,18 @@ function Index() {
         <div className="section-shell grid items-center gap-12 py-16 md:grid-cols-[1fr_1.1fr] md:py-24">
           <HeroGraphic />
           <div className="hero-enter">
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1.5 text-xs font-semibold text-foreground"><span className="h-1.5 w-1.5 rounded-full bg-coral" /> Information · Opportunity · Learning</p>
-            <h1 className="display-heading text-[32px] leading-[1.12] sm:text-[44px]">
-              <span className="text-coral-soft-foreground">Find Your Place in the </span>
-              <span className="relative whitespace-nowrap text-coral">AI Work<span className="absolute inset-x-0 bottom-1 -z-10 h-2.5 rounded bg-primary/50" /></span>
+            <p className="flex-wordmark mb-3 text-2xl sm:text-3xl">AI FLEX <span className="text-crimson">Connect</span></p>
+            <p className="mb-5 text-sm font-semibold tracking-[0.2em] text-muted-foreground">AI WORK <span className="text-crimson">|</span> AI LEARNING <span className="text-crimson">|</span> AI PLATFORMS</p>
+            <h1 className="display-heading text-[30px] leading-[1.15] sm:text-[40px]">
+              <span className="text-foreground">Find Your Place in the </span>
+              <span className="relative whitespace-nowrap text-crimson">AI Work<span className="absolute inset-x-0 bottom-1 -z-10 h-2.5 rounded bg-primary/50" /></span>
               <span className="text-foreground"> Economy</span>
             </h1>
-            <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">AI FLEX Connect helps you discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms — all in one clear, trustworthy place.</p>
+            <p className="mt-5 max-w-lg font-medium leading-relaxed text-crimson">Connecting human potential with the possibilities of AI.</p>
+            <p className="mt-3 max-w-lg leading-relaxed text-muted-foreground">AI FLEX Connect helps you discover AI work, understand AI training opportunities, learn useful skills and find legitimate platforms — all in one clear, trustworthy place.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" className="h-12 rounded-full px-7 glow-gold" onClick={() => go('find')}>AI Jobs | Placements <ArrowRight /></Button>
-              <Button size="lg" variant="outline" className="h-12 rounded-full px-7" onClick={() => go('learning')}><BookOpen /> AI Educate | Learn</Button>
+              <Button size="lg" className="flex-pill h-12 px-8" onClick={() => go('find')}>AI Jobs | Placements <ArrowRight /></Button>
+              <Button size="lg" variant="outline" className="h-12 rounded-full border-ink bg-card px-8" onClick={() => go('learning')}><BookOpen /> AI Educate | Learn</Button>
             </div>
           </div>
         </div>
