@@ -179,8 +179,8 @@ function Index() {
         <div className="section-shell">
           <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
           <div className="circle-grid category-grid">
-            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile category-circle lift group">
-              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full ${i % 3 === 2 ? 'bg-coral-soft text-coral' : 'bg-gold-soft text-foreground'}`}><Icon className="h-6 w-6" /></span>
+            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile category-circle lift group tile-gold">
+              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-sm ${i % 3 === 2 ? 'bg-coral text-white' : 'bg-card text-coral'}`}><Icon className="h-6 w-6" /></span>
               <span className="font-display text-lg font-bold">{c}</span><span className="text-sm leading-relaxed text-muted-foreground">{text}</span><ArrowUpRight className="h-4 w-4 text-coral" />
             </Button>; })}
           </div>
@@ -193,7 +193,7 @@ function Index() {
           <Heading label="Opportunities" title="Featured Opportunities" text="Sample roles to show what AI work can look like." action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
           {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No sample opportunities match yet — try another search.</p> :
           <div className="circle-grid">
-            {filtered.map(o => <article key={o.id} className="circle-tile opportunity-circle lift border border-border bg-card">
+            {filtered.map(o => <article key={o.id} className="circle-tile opportunity-circle lift border-0 tile-coral">
               <span className="text-xs font-semibold text-coral">{o.featured ? 'Featured · ' : ''}{o.category}</span>
               <h3 className="font-display text-lg font-bold leading-snug">{o.title}</h3>
               <p className="text-sm font-medium text-muted-foreground">{o.company}</p>
@@ -210,8 +210,8 @@ function Index() {
         <div className="section-shell">
           <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
           <div className="circle-grid">
-            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile platform-circle lift" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
-              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-primary font-display text-lg font-bold">{p.mark}</span>
+            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile platform-circle lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
+              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-primary bg-card font-display text-lg font-bold shadow-sm">{p.mark}</span>
               <h3 className="font-display text-xl font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
               <p className="text-sm leading-relaxed text-muted-foreground">{p.text}</p>
               <span className="flex items-center gap-1 text-xs font-semibold">Explore company <ArrowUpRight /></span>
@@ -225,8 +225,8 @@ function Index() {
         <div className="section-shell">
           <Heading label="AI Learning" title="Learn About AI Work" text="Short, practical guides to help you start with confidence." />
           <div className="circle-grid">
-            {lessons.map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <InformationSections sections={lessonSections[i] ?? []} /> })} className="circle-tile learning-circle lift bg-card">
-              <span className="font-display text-3xl font-extrabold text-primary">0{i + 1}</span>
+            {lessons.map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <InformationSections sections={lessonSections[i] ?? []} /> })} className="circle-tile learning-circle lift tile-blend">
+              <span className="font-display text-3xl font-extrabold text-coral">0{i + 1}</span>
               <p className="text-xs font-semibold text-coral">{l.category}</p><h3 className="font-display text-xl font-bold">{l.title}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{l.text}</p>
               <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><BookOpen className="h-3.5 w-3.5" />Read guide <ArrowRight /></span>
