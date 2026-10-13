@@ -118,7 +118,7 @@ function Index() {
             <Button variant="ghost" onClick={g.act} className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
               {g.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
             </Button>
-            <div className="invisible absolute left-0 top-full z-40 w-[260px] translate-y-1 rounded-lg border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+            <div className="invisible absolute right-0 top-full z-40 w-[260px] translate-y-1 rounded-lg border border-border bg-card p-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
               <p className="px-3.5 py-3 text-xs leading-relaxed text-muted-foreground">{g.intro}</p>
               {g.subs.map(s => <Button variant="ghost" key={s.name} onClick={s.act} className="block w-full rounded-xl px-3.5 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{s.name}</Button>)}
             </div>
