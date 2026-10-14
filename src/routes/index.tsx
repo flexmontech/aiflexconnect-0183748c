@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState, type ReactNode } from 'react';
-import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { useServerFn } from '@tanstack/react-start';
+import { joinCommunity } from '@/lib/community.functions';
+import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
@@ -72,6 +74,7 @@ function Index() {
   const [category, setCategory] = useState('All');
   const [location, setLocation] = useState('All locations');
   const [modal, setModal] = useState<Modal>(null);
+  const [joinOpen, setJoinOpen] = useState(false);
 
   const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
   const showInformation = (title: string) => {
@@ -177,15 +180,15 @@ function Index() {
       </section>
 
       {/* Categories */}
-      <section id="categories" className="section-space scroll-mt-20">
+      <section id="categories" className="section-space scroll-mt-20 band-gold">
         <div className="section-shell">
           <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
-          <div className="circle-grid category-grid">
-            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile category-circle lift group tile-gold">
-              <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-sm ${i % 3 === 2 ? 'bg-coral text-white' : 'bg-card text-coral'}`}><Icon className="h-6 w-6" /></span>
-              <span className="font-display text-lg font-bold">{c}</span><span className="text-sm leading-relaxed text-muted-foreground">{text}</span><ArrowUpRight className="h-4 w-4 text-coral" />
+          <Carousel>
+            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile lift group tile-gold">
+              <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full shadow-sm ${i % 3 === 2 ? 'bg-coral text-white' : 'bg-card text-coral'}`}><Icon className="h-5 w-5" /></span>
+              <span className="font-display font-bold">{c}</span><span className="text-sm text-muted-foreground">{text}</span><ArrowUpRight className="h-4 w-4 text-coral" />
             </Button>; })}
-          </div>
+          </Carousel>
         </div>
       </section>
 
@@ -194,45 +197,47 @@ function Index() {
         <div className="section-shell">
           <Heading label="Opportunities" title="Featured Opportunities" text="Sample roles to show what AI work can look like." action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
           {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No sample opportunities match yet — try another search.</p> :
-          <div className="circle-grid">
-            {filtered.map(o => <article key={o.id} className="circle-tile opportunity-circle lift border-0 tile-coral">
+          <Carousel>
+            {filtered.map(o => <article key={o.id} className="circle-tile lift border-0 tile-coral">
               <span className="text-xs font-semibold text-coral">{o.featured ? 'Featured · ' : ''}{o.category}</span>
-              <h3 className="font-display text-lg font-bold leading-snug">{o.title}</h3>
-              <p className="text-sm font-medium text-muted-foreground">{o.company}</p>
-              <div className="flex flex-col items-center gap-1 text-xs text-muted-foreground"><span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{o.location}</span><span>{o.type}</span></div>
-              <span className="font-display text-lg font-bold">{o.rate}<span className="text-xs font-normal text-muted-foreground"> /hr</span></span>
-              <Button variant="ghost" onClick={() => openDetail(o)} className="h-8 rounded-full text-sm font-semibold">Learn more <ArrowRight /></Button>
+              <h3 className="font-display font-bold leading-snug">{o.title}</h3>
+              <p className="font-medium text-muted-foreground">{o.company}</p>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{o.location}</span>
+              <span className="font-display font-bold">{o.rate}<span className="text-xs font-normal text-muted-foreground"> /hr</span></span>
+              <Button variant="ghost" onClick={() => openDetail(o)} className="h-7 rounded-full text-xs font-semibold">Learn more <ArrowRight /></Button>
             </article>)}
-          </div>}
+          </Carousel>}
         </div>
       </section>
 
       {/* Platforms */}
-      <section id="platforms" className="section-space scroll-mt-20">
+      <section id="platforms" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
           <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
-          <div className="circle-grid">
-            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile platform-circle lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
-              <span className="grid h-12 w-12 place-items-center rounded-full border-2 border-primary bg-card font-display text-lg font-bold shadow-sm">{p.mark}</span>
-              <h3 className="font-display text-xl font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">{p.text}</p>
-              <span className="flex items-center gap-1 text-xs font-semibold">Explore company <ArrowUpRight /></span>
+          <Carousel>
+            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
+              <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
+              <h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
+              <p className="text-sm text-muted-foreground">{p.text}</p>
+              <span className="flex items-center gap-1 text-xs font-semibold">Explore <ArrowUpRight /></span>
             </Button>)}
-          </div>
+          </Carousel>
         </div>
       </section>
 
       {/* Learning */}
       <section id="learning" className="section-space scroll-mt-20 bg-muted">
         <div className="section-shell">
-          <Heading label="AI Learning" title="Learn About AI Work" text="Short, practical guides to help you start with confidence." />
-          <div className="circle-grid">
-            {lessons.map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <InformationSections sections={lessonSections[i] ?? []} /> })} className="circle-tile learning-circle lift tile-blend">
-              <span className="font-display text-3xl font-extrabold text-coral">0{i + 1}</span>
-              <p className="text-xs font-semibold text-coral">{l.category}</p><h3 className="font-display text-xl font-bold">{l.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{l.text}</p>
-              <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><BookOpen className="h-3.5 w-3.5" />Read guide <ArrowRight /></span>
+          <Heading label="AI Learning" title="Curated AI Education, Tips & Research" text="A preview of member-only learning. Join the community to unlock the full expert library." />
+          <div className="learning-row">
+            {lessons.slice(0, 3).map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <><InformationSections sections={lessonSections[i] ?? []} /><Button className="flex-pill" onClick={() => { setModal(null); setJoinOpen(true); }}>Join to unlock the full guide <ArrowRight /></Button></> })} className="circle-tile lift tile-blend">
+              <span className="font-display text-2xl font-extrabold text-coral">0{i + 1}</span>
+              <span className="hide-sm text-xs font-semibold text-coral">{['Education', 'Tips', 'Research'][i]}</span><h3 className="font-display font-bold">{l.title}</h3>
+              <p className="text-xs text-muted-foreground">{l.text}</p>
             </Button>)}
+          </div>
+          <div className="mt-10 flex justify-center">
+            <Button size="lg" className="flex-pill h-auto whitespace-normal px-8 py-4 text-base" onClick={() => setJoinOpen(true)}>Join.. Get more AI tips and advice from experts <ArrowRight /></Button>
           </div>
         </div>
       </section>
@@ -310,5 +315,42 @@ function Index() {
         {modal?.detail}
       </DialogContent>
     </Dialog>
+    <JoinDialog open={joinOpen} onOpenChange={setJoinOpen} />
   </div>;
+}
+
+function Carousel({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (d: number) => ref.current?.scrollBy({ left: d * 500, behavior: 'smooth' });
+  return <div className="relative">
+    <div ref={ref} className="circle-carousel">{children}</div>
+    <div className="mt-2 flex justify-center gap-3">
+      <Button variant="outline" size="icon" aria-label="Scroll left" className="rounded-full" onClick={() => scroll(-1)}><ChevronLeft /></Button>
+      <Button variant="outline" size="icon" aria-label="Scroll right" className="rounded-full" onClick={() => scroll(1)}><ChevronRight /></Button>
+    </div>
+  </div>;
+}
+
+function JoinDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+  const join = useServerFn(joinCommunity);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
+  const [error, setError] = useState('');
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); setError(''); setStatus('sending');
+    try { await join({ data: new FormData(e.currentTarget) }); setStatus('done'); }
+    catch (err) { setStatus('idle'); const m = err instanceof Error ? err.message : ''; setError(m.startsWith('[') ? 'Please check your name and email.' : m || 'Something went wrong.'); }
+  }
+  return <Dialog open={open} onOpenChange={o => { onOpenChange(o); if (!o) { setStatus('idle'); setError(''); } }}>
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader><DialogTitle className="font-display text-xl">Join the AI FLEX Connect community</DialogTitle><DialogDescription>Get curated AI education, expert tips and research briefings.</DialogDescription></DialogHeader>
+      {status === 'done' ? <p className="rounded-xl bg-gold-soft p-4 text-sm">Thank you — your details have been received. We'll be in touch with your member learning access.</p> :
+      <form onSubmit={submit} className="grid gap-4">
+        <label className="grid gap-1 text-sm font-medium">Full name<input name="fullName" required maxLength={100} className="h-10 rounded-md border border-input bg-background px-3" /></label>
+        <label className="grid gap-1 text-sm font-medium">Email<input name="email" type="email" required maxLength={255} className="h-10 rounded-md border border-input bg-background px-3" /></label>
+        <label className="grid gap-1 text-sm font-medium">Résumé <span className="text-xs font-normal text-muted-foreground">(optional · PDF or Word, max 5MB)</span><input name="resume" type="file" accept=".pdf,.doc,.docx" className="text-sm" /></label>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <Button type="submit" className="flex-pill" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Join now'}</Button>
+      </form>}
+    </DialogContent>
+  </Dialog>;
 }

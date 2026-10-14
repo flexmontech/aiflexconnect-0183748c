@@ -199,6 +199,16 @@
 .tile-sand { background: linear-gradient(150deg, color-mix(in oklch, var(--foreground) 5%, var(--card)), color-mix(in oklch, var(--gold-soft) 75%, var(--card))); box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--foreground) 22%, transparent), 0 16px 36px -20px color-mix(in oklch, var(--foreground) 22%, transparent); }
 .tile-blend { background: linear-gradient(150deg, var(--gold-soft), var(--coral-soft)); box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--primary) 40%, transparent), 0 16px 36px -20px var(--glow); }
 @media (max-width: 420px) { .circle-tile { padding: 38px; gap: 8px; } .category-circle { padding: 34px; } }
+.circle-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 4px 20px; scrollbar-width: thin; }
+.circle-carousel > * { scroll-snap-align: start; }
+.circle-carousel .circle-tile { width: 230px; min-width: 230px; padding: 30px; gap: 6px; }
+.circle-carousel .circle-tile h3, .circle-carousel .circle-tile .font-display { font-size: 1rem; }
+.circle-carousel .circle-tile p, .circle-carousel .circle-tile .text-sm { font-size: 0.75rem; line-height: 1.35; }
+.band-gold { background: linear-gradient(180deg, color-mix(in oklch, var(--gold-soft) 85%, var(--background)), var(--gold-soft)); }
+.band-stone { background: color-mix(in oklch, var(--foreground) 7%, var(--background)); }
+.learning-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; justify-items: center; }
+.learning-row .circle-tile { width: min(100%, 260px); padding: 26px; gap: 6px; }
+@media (max-width: 640px) { .learning-row .circle-tile { padding: 12px; } .learning-row .circle-tile p, .learning-row .circle-tile .hide-sm { display: none; } .learning-row h3 { font-size: 0.8rem; } }
 @keyframes enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes floaty { 50% { transform: translateY(-8px); } }
 @media (max-width: 767px) { .section-shell { width: calc(100% - 36px); } .section-space { padding-block: 56px; } }
