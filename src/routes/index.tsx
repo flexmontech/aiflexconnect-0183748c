@@ -35,8 +35,8 @@ function InformationSections({ sections }: { sections: { heading: string; text: 
 
 function Brand() {
   return <span className="flex items-center gap-2.5">
-    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-primary font-display text-sm font-extrabold text-primary-foreground glow-gold">AF<span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-coral" /></span>
-    <span className="font-display text-[17px] font-bold tracking-tight text-foreground">AI FLEX <span className="font-medium text-muted-foreground">Connect</span></span>
+    <span className="relative grid h-10 w-10 place-items-center rounded-md border-2 border-ink bg-card font-display text-sm font-extrabold text-ink">AF<span className="absolute -right-1 -top-1 h-3 w-3 rounded-sm bg-crimson" /></span>
+    <span className="flex-wordmark text-[14px] text-ink">AI FLEX <span className="text-crimson">Connect</span></span>
   </span>;
 }
 
