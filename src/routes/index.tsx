@@ -72,6 +72,7 @@ function Index() {
   const [category, setCategory] = useState('All');
   const [location, setLocation] = useState('All locations');
   const [modal, setModal] = useState<Modal>(null);
+  const [joinOpen, setJoinOpen] = useState(false);
 
   const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
   const showInformation = (title: string) => {
@@ -312,5 +313,42 @@ function Index() {
         {modal?.detail}
       </DialogContent>
     </Dialog>
+    <JoinDialog open={joinOpen} onOpenChange={setJoinOpen} />
   </div>;
+}
+
+function Carousel({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (d: number) => ref.current?.scrollBy({ left: d * 500, behavior: 'smooth' });
+  return <div className="relative">
+    <div ref={ref} className="circle-carousel">{children}</div>
+    <div className="mt-2 flex justify-center gap-3">
+      <Button variant="outline" size="icon" aria-label="Scroll left" className="rounded-full" onClick={() => scroll(-1)}><ChevronLeft /></Button>
+      <Button variant="outline" size="icon" aria-label="Scroll right" className="rounded-full" onClick={() => scroll(1)}><ChevronRight /></Button>
+    </div>
+  </div>;
+}
+
+function JoinDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+  const join = useServerFn(joinCommunity);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
+  const [error, setError] = useState('');
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); setError(''); setStatus('sending');
+    try { await join({ data: new FormData(e.currentTarget) }); setStatus('done'); }
+    catch (err) { setStatus('idle'); const m = err instanceof Error ? err.message : ''; setError(m.startsWith('[') ? 'Please check your name and email.' : m || 'Something went wrong.'); }
+  }
+  return <Dialog open={open} onOpenChange={o => { onOpenChange(o); if (!o) { setStatus('idle'); setError(''); } }}>
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader><DialogTitle className="font-display text-xl">Join the AI FLEX Connect community</DialogTitle><DialogDescription>Get curated AI education, expert tips and research briefings.</DialogDescription></DialogHeader>
+      {status === 'done' ? <p className="rounded-xl bg-gold-soft p-4 text-sm">Thank you — your details have been received. We'll be in touch with your member learning access.</p> :
+      <form onSubmit={submit} className="grid gap-4">
+        <label className="grid gap-1 text-sm font-medium">Full name<input name="fullName" required maxLength={100} className="h-10 rounded-md border border-input bg-background px-3" /></label>
+        <label className="grid gap-1 text-sm font-medium">Email<input name="email" type="email" required maxLength={255} className="h-10 rounded-md border border-input bg-background px-3" /></label>
+        <label className="grid gap-1 text-sm font-medium">Résumé <span className="text-xs font-normal text-muted-foreground">(optional · PDF or Word, max 5MB)</span><input name="resume" type="file" accept=".pdf,.doc,.docx" className="text-sm" /></label>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <Button type="submit" className="flex-pill" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Join now'}</Button>
+      </form>}
+    </DialogContent>
+  </Dialog>;
 }
