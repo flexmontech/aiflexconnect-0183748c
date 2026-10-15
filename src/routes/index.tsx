@@ -89,7 +89,7 @@ function Index() {
       { name: 'Jobs', act: () => go('featured') },
       { name: 'Referrals', act: () => showInformation('Referrals') },
     ] },
-    { name: 'AI Dev Platforms', act: () => showInformation('AI Dev Platforms'), intro: 'Companies, project types and industry developments.', subs: [
+    { name: 'AI Platforms', act: () => showInformation('AI Platforms'), intro: 'Companies, project types and industry developments.', subs: [
       { name: 'Companies', act: () => go('platforms') },
       { name: 'AI Updates', act: () => go('updates') },
     ] },
@@ -213,7 +213,7 @@ function Index() {
       {/* Platforms */}
       <section id="platforms" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
-          <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
+          <Heading label="Where the work is" title="AI Platforms" text="A small preview of platforms people use for AI training work." />
           <Carousel>
             {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
               <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
@@ -228,16 +228,30 @@ function Index() {
       {/* Learning */}
       <section id="learning" className="section-space scroll-mt-20 bg-muted">
         <div className="section-shell">
-          <Heading label="AI Learning" title="Curated AI Education, Tips & Research" text="A preview of member-only learning. Join the community to unlock the full expert library." />
+          <div className="mb-8 max-w-xl">
+            <p className="section-label mb-2 flex items-center gap-2 text-muted-foreground"><span className="h-px w-6 bg-coral" />AI Learning</p>
+            <h2 className="display-heading text-xl text-foreground sm:text-2xl">AI Education, Tips & Research</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Free guides to read now. Tap a circle to open the full guide.</p>
+          </div>
           <div className="learning-row">
-            {lessons.slice(0, 3).map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <><InformationSections sections={lessonSections[i] ?? []} /><Button className="flex-pill" onClick={() => { setModal(null); setJoinOpen(true); }}>Join to unlock the full guide <ArrowRight /></Button></> })} className="circle-tile lift tile-blend">
+            {lessons.slice(0, 3).map((l, i) => <Button variant="outline" key={l.title} onClick={() => setModal({ title: l.title, text: l.text, detail: <><InformationSections sections={lessonSections[i] ?? []} /><Button className="flex-pill" onClick={() => { setModal(null); setJoinOpen(true); }}>Join for more expert tips <ArrowRight /></Button></> })} className="circle-tile lift tile-blend">
               <span className="font-display text-2xl font-extrabold text-coral">0{i + 1}</span>
               <span className="hide-sm text-xs font-semibold text-coral">{['Education', 'Tips', 'Research'][i]}</span><h3 className="font-display font-bold">{l.title}</h3>
-              <p className="text-xs text-muted-foreground">{l.text}</p>
+              <span className="text-xs font-semibold underline">Read guide</span>
             </Button>)}
           </div>
-          <div className="mt-10 flex justify-center">
-            <Button size="lg" className="flex-pill h-auto whitespace-normal px-8 py-4 text-base" onClick={() => setJoinOpen(true)}>Join.. Get more AI tips and advice from experts <ArrowRight /></Button>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {lessons.slice(0, 3).map((l, i) => <article key={l.title} className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-xs font-semibold text-coral">0{i + 1} · {['Education', 'Tips', 'Research'][i]}</p>
+              <h3 className="mt-1 font-display font-bold">{l.title}</h3>
+              <div className="mt-3 space-y-3">{(lessonSections[i] ?? []).map(s => <div key={s.heading}><p className="text-sm font-semibold">{s.heading}</p><p className="text-sm leading-relaxed text-muted-foreground">{s.text}</p></div>)}</div>
+            </article>)}
+          </div>
+          <div className="mt-10 rounded-3xl bg-ink p-8 text-center text-on-dark">
+            <p className="section-label text-primary">Members get more</p>
+            <h3 className="mt-2 font-display text-xl font-bold sm:text-2xl">Want deeper AI knowledge, tips and education?</h3>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-on-dark-muted">Join the community for expert advice, step-by-step masterclasses, new research breakdowns and AI work tips sent to members.</p>
+            <Button size="lg" className="mt-6 h-auto whitespace-normal rounded-full px-8 py-4 text-base glow-gold" onClick={() => setJoinOpen(true)}>Join.. Get more AI tips and advice from experts <ArrowRight /></Button>
           </div>
         </div>
       </section>

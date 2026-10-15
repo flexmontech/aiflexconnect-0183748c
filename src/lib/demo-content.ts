@@ -10,7 +10,7 @@ export const demoInformation: Record<string, Information> = {
     { heading: 'Example referral note', text: '“I have experience reviewing technical writing and can evaluate answers for clarity and accuracy. I am interested in remote AI evaluation projects and can share a short work sample.”' },
     { heading: 'Protect your application', text: 'Apply through an official company channel. Never pay for a referral or share passwords, identity documents or banking details with an unverified intermediary.' },
   ] },
-  'AI Dev Platforms': { intro: 'Understand the companies and platforms connecting human expertise with AI development.', sections: [
+  'AI Platforms': { intro: 'Understand the companies and platforms connecting human expertise with AI development.', sections: [
     { heading: 'Compare companies', text: 'Outlier, TELUS Digital and Alignerr illustrate different AI-work models. Compare supported countries, assessments, project availability and payment conditions on official company channels.' },
     { heading: 'Follow platform developments', text: 'Watch for changes in qualification requirements, task types and data-handling policies. A directory profile is a starting point for research, not an endorsement or hiring guarantee.' },
   ] },
