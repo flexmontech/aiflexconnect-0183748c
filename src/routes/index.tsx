@@ -89,7 +89,7 @@ function Index() {
       { name: 'Jobs', act: () => go('featured') },
       { name: 'Referrals', act: () => showInformation('Referrals') },
     ] },
-    { name: 'AI Dev Platforms', act: () => showInformation('AI Dev Platforms'), intro: 'Companies, project types and industry developments.', subs: [
+    { name: 'AI Platforms', act: () => showInformation('AI Platforms'), intro: 'Companies, project types and industry developments.', subs: [
       { name: 'Companies', act: () => go('platforms') },
       { name: 'AI Updates', act: () => go('updates') },
     ] },
@@ -213,7 +213,7 @@ function Index() {
       {/* Platforms */}
       <section id="platforms" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
-          <Heading label="Where the work is" title="AI Dev Platforms" text="A small preview of platforms people use for AI training work." />
+          <Heading label="Where the work is" title="AI Platforms" text="A small preview of platforms people use for AI training work." />
           <Carousel>
             {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
               <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
