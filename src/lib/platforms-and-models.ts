@@ -40,3 +40,20 @@ export const aiModels: AIModel[] = [
   { name: 'Gemma', maker: 'Google DeepMind', version: 'Gemma 3', type: 'Open-Weights', note: 'Small open models that run on laptops.', trainedVia: ['Appen', 'OneForma'] },
   { name: 'Amazon Nova', maker: 'Amazon AGI', version: 'Nova Pro / Lite / Premier', type: 'Multimodal', note: 'Multimodal models served through AWS Bedrock.', trainedVia: ['Appen', 'TaskUs'] },
 ];
+
+export type AITool = { name: string; maker: string; type: 'Evaluation' | 'Annotation' | 'Prompting' | 'Productivity'; use: string; tip: string; url: string };
+
+export const aiTools: AITool[] = [
+  { name: 'LMArena (Chatbot Arena)', maker: 'LMSYS / LMArena', type: 'Evaluation', use: 'Compare two model answers side by side and vote — mirrors real preference-ranking work.', tip: 'Practise writing a one-line justification for every vote.', url: 'https://lmarena.ai' },
+  { name: 'LangSmith', maker: 'LangChain', type: 'Evaluation', use: 'Trace, test and score LLM outputs against datasets and rubrics.', tip: 'Learn how rubric-based scoring works before evaluator assessments.', url: 'https://www.langchain.com/langsmith' },
+  { name: 'Weights & Biases', maker: 'CoreWeave', type: 'Evaluation', use: 'Track experiments and model evaluations used by research teams.', tip: 'Useful vocabulary for AI research and ML ops roles.', url: 'https://wandb.ai' },
+  { name: 'Label Studio', maker: 'HumanSignal', type: 'Annotation', use: 'Open-source tool for labelling text, images, audio and video.', tip: 'Install locally to practise annotation before applying.', url: 'https://labelstud.io' },
+  { name: 'Argilla', maker: 'Hugging Face', type: 'Annotation', use: 'Collect human feedback and build datasets for fine-tuning and RLHF.', tip: 'Shows exactly how preference data is gathered for model training.', url: 'https://argilla.io' },
+  { name: 'CVAT', maker: 'CVAT.ai', type: 'Annotation', use: 'Computer-vision labelling: boxes, polygons and video tracking.', tip: 'Good practice for image-annotation projects.', url: 'https://www.cvat.ai' },
+  { name: 'OpenAI Playground', maker: 'OpenAI', type: 'Prompting', use: 'Test prompts, system messages and settings on GPT models.', tip: 'Practise writing adversarial and edge-case prompts.', url: 'https://platform.openai.com/playground' },
+  { name: 'Anthropic Console', maker: 'Anthropic', type: 'Prompting', use: 'Draft and evaluate prompts for Claude models.', tip: 'Its prompt-improver shows what strong instructions look like.', url: 'https://console.anthropic.com' },
+  { name: 'Google AI Studio', maker: 'Google', type: 'Prompting', use: 'Free playground for Gemini models, including multimodal input.', tip: 'Great for testing image + text reasoning tasks.', url: 'https://aistudio.google.com' },
+  { name: 'LM Studio', maker: 'Element Labs', type: 'Prompting', use: 'Run open-weights models (Llama, DeepSeek, Mistral) on your own computer.', tip: 'Compare open models privately and for free.', url: 'https://lmstudio.ai' },
+  { name: 'NotebookLM', maker: 'Google', type: 'Productivity', use: 'Summarise guidelines and research papers from your own sources.', tip: 'Load long project guidelines to study them faster.', url: 'https://notebooklm.google' },
+  { name: 'Grammarly', maker: 'Grammarly', type: 'Productivity', use: 'Polish written rationales and feedback for clarity.', tip: 'Clear, error-free justifications raise quality scores.', url: 'https://www.grammarly.com' },
+];

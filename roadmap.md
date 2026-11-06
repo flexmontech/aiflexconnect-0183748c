@@ -7,3 +7,6 @@
 - [x] Replace category, opportunity, platform and learning rectangles with circular tiles.
 - [x] Provide substantive information for every header item, lesson, company, update and membership action; fix footer targets.
 - [x] Verify demo interactions and circular layouts in the preview.
+- [x] Shrink carousel and learning circles
+- [x] AI Tools directory tab
+- [ ] Referrals tab (on hold — user will revisit)

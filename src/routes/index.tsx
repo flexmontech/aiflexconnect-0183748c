@@ -97,7 +97,7 @@ function Index() {
       { name: 'AI Updates', act: () => go('updates') },
     ] },
     { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
-      { name: 'AI Tools', act: () => showInformation('AI Tools') },
+      { name: 'AI Tools', act: () => openDir('tools') },
       { name: 'AI Models', act: () => openDir('models') },
       { name: 'AI Update', act: () => go('updates') },
       { name: 'AI Educate', act: () => go('learning') },
