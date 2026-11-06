@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, Ch
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
+import { DirectoryDialog, type DirectoryTab } from '@/components/DirectoryDialog';
 import { demoInformation, lessonSections, updateSections } from '@/lib/demo-content';
 
 export const Route = createFileRoute('/')({
@@ -75,6 +76,8 @@ function Index() {
   const [location, setLocation] = useState('All locations');
   const [modal, setModal] = useState<Modal>(null);
   const [joinOpen, setJoinOpen] = useState(false);
+  const [dirTab, setDirTab] = useState<DirectoryTab | null>(null);
+  const openDir = (t: DirectoryTab) => { setMenuOpen(false); setDirTab(t); };
 
   const go = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setMenuOpen(false); };
   const showInformation = (title: string) => {
@@ -90,12 +93,12 @@ function Index() {
       { name: 'Referrals', act: () => showInformation('Referrals') },
     ] },
     { name: 'AI Platforms', act: () => showInformation('AI Platforms'), intro: 'Companies, project types and industry developments.', subs: [
-      { name: 'Companies', act: () => go('platforms') },
+      { name: 'Companies', act: () => openDir('platforms') },
       { name: 'AI Updates', act: () => go('updates') },
     ] },
     { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
       { name: 'AI Tools', act: () => showInformation('AI Tools') },
-      { name: 'AI Models', act: () => showInformation('AI Models') },
+      { name: 'AI Models', act: () => openDir('models') },
       { name: 'AI Update', act: () => go('updates') },
       { name: 'AI Educate', act: () => go('learning') },
     ] },
@@ -329,6 +332,7 @@ function Index() {
         {modal?.detail}
       </DialogContent>
     </Dialog>
+    <DirectoryDialog tab={dirTab} onTab={setDirTab} onClose={() => setDirTab(null)} />
     <JoinDialog open={joinOpen} onOpenChange={setJoinOpen} />
   </div>;
 }
