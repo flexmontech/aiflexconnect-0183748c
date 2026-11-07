@@ -106,7 +106,7 @@ function Index() {
   ];
 
   const locations = ['All locations', ...Array.from(new Set(opportunities.map(o => o.location)))];
-  const filtered = opportunities.filter(o => (category === 'All' || o.category === category) && (location === 'All locations' || o.location === location) && `${o.title} ${o.company} ${o.skills.join(' ')}`.toLowerCase().includes(query.toLowerCase().trim()));
+  const filtered = opportunities.filter(o => (category === 'All' || o.category === category) && (location === 'All locations' || o.location === location) && query.toLowerCase().split(/\s+/).filter(Boolean).every(w => `${o.title} ${o.company} ${o.category} ${o.type} ${o.description} ${o.skills.join(' ')}`.toLowerCase().includes(w)));
   const pickCategory = (c: string) => { setCategory(c); go('featured'); };
   const openDetail = (o: typeof opportunities[number]) => setModal({ title: o.title, text: o.description, detail: <div className="space-y-4 text-sm">
     <div className="flex flex-wrap gap-2">{[o.company, o.location, o.type].map(t => <span key={t} className="rounded-full bg-muted px-3 py-1">{t}</span>)}</div>
@@ -170,7 +170,7 @@ function Index() {
       <section id="find" className="scroll-mt-20 relative z-10 -mt-6">
         <div className="section-shell border-b border-border bg-background py-10">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search sample roles by skill, title or platform.</p></div>
+            <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search roles by skill, title, category or platform.</p></div>
             <span className="text-sm text-muted-foreground"><strong className="text-foreground">{filtered.length}</strong> matching opportunities</span>
           </div>
           <div className="grid gap-3 md:grid-cols-[1fr_200px_180px_auto]">
@@ -199,8 +199,8 @@ function Index() {
       {/* Featured */}
       <section id="featured" className="section-space scroll-mt-20 bg-muted">
         <div className="section-shell">
-          <Heading label="Opportunities" title="Featured Opportunities" text="Sample roles to show what AI work can look like." action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
-          {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No sample opportunities match yet — try another search.</p> :
+          <Heading label="Opportunities" title="Featured Opportunities" text={`${filtered.length} role${filtered.length === 1 ? '' : 's'} match your search.`} action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
+          {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No roles match — try another word or clear the filters.</p> :
           <Carousel>
             {filtered.map(o => <article key={o.id} className="circle-tile lift border-0 tile-coral">
               <span className="text-xs font-semibold text-coral">{o.featured ? 'Featured · ' : ''}{o.category}</span>
