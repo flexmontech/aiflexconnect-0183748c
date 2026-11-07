@@ -21,19 +21,19 @@ export function LiveNews() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center gap-2">
-        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> Live from AI magazines</span>
+        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> AI tools & model updates · refreshed daily</span>
         {['All', ...present].map(s => (
           <Button key={s} size="sm" variant={filter === s ? 'default' : 'outline'} className="rounded-full" onClick={() => setFilter(s)}>{s}</Button>
         ))}
       </div>
       {items === null ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-muted" />)}</div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="aspect-square animate-pulse rounded-2xl bg-muted" />)}</div>
       ) : shown.length === 0 ? (
         <p className="rounded-2xl border border-border p-6 text-sm text-muted-foreground">{error ? 'Live news is temporarily unavailable. Please check back shortly.' : 'No news stories right now. Please check back shortly.'}</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.slice(0, 12).map(n => (
-            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-lg">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {shown.slice(0, 8).map(n => (
+            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex aspect-square flex-col overflow-hidden rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-lg">
               <span className="flex items-center justify-between text-xs"><span className="section-label text-coral">{n.source}</span><span className="text-muted-foreground">{fmt(n.date)}</span></span>
               <span className="mt-2 font-display text-base font-bold leading-snug">{n.title}</span>
               <span className="mt-2 line-clamp-3 text-sm text-muted-foreground">{n.summary}</span>
