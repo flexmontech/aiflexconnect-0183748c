@@ -21,7 +21,7 @@ export function DirectoryDialog({ tab, onTab, onClose }: { tab: DirectoryTab | n
         <DialogDescription>{tab === 'platforms' ? 'Who owns each AI work platform, what it pays and how to get in. Always confirm on the official site.' : tab === 'educate' ? 'Courses, training and certifications that build AI trainer, evaluator and research skills.' : 'Trending, important tools used in the AI industry — and the frontier models they work with.'}</DialogDescription>
       </DialogHeader>
       <div className="flex flex-wrap gap-2">
-        {tab !== 'platforms' && tab !== 'educate' && (['tools', 'models'] as const).map(t => <button key={t} onClick={() => switchTab(t)} className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === t ? 'bg-foreground text-background' : 'border border-border'}`}>{t === 'platforms' ? '' : t === 'models' ? `Models (${aiModels.length})` : `Tools (${aiTools.length})`}</button>)}
+        {tab !== 'platforms' && tab !== 'educate' && (['tools', 'models'] as const).map(t => <button key={t} onClick={() => switchTab(t)} className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === t ? 'bg-foreground text-background' : 'border border-border'}`}>{t === 'models' ? `Models (${aiModels.length})` : `Tools (${aiTools.length})`}</button>)}
       </div>
       <div className="flex flex-wrap gap-2">
         {filters.map(f => <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-3 py-1 text-xs font-semibold ${filter === f ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>{f}</button>)}
