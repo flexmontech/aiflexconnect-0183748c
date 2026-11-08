@@ -4,6 +4,9 @@ export const demoInformation: Record<string, Information> = {
   'AI Work': { intro: 'Explore the human skills behind AI: writing, evaluation, research and specialist knowledge.', sections: [
     { heading: 'Jobs and placements', text: 'Compare the role, required skills, location eligibility and project format. AI training often involves freelance tasks rather than a guaranteed salaried position.' },
     { heading: 'Referrals', text: 'A referral introduces a candidate to a platform or team. It does not guarantee acceptance. Prepare a concise skills summary and verify the official application process.' },
+    { heading: 'Main role types', text: 'AI Trainer (write ideal answers and prompts), AI Evaluator / Rater (score and compare model responses), Data Annotator (label text, images, audio, video), Red-Teamer (find unsafe or broken outputs) and Domain Expert (PhD, law, medicine, finance, coding reviews).' },
+    { heading: 'Typical pay bands', text: 'Generalist rating and annotation: $8–$25/hr. Strong writers and coders: $20–$50/hr. Credentialed experts (PhD, MD, JD, senior engineers): $40–$150+/hr. Rates vary by country and project.' },
+    { heading: 'How hiring works', text: 'Most platforms use a profile, a skills assessment and sometimes an AI video interview. Passing unlocks projects; work volume can rise and fall, so many contributors join 2–4 platforms.' },
   ] },
   Referrals: { intro: 'A practical guide to professional introductions in AI work.', sections: [
     { heading: 'Prepare your introduction', text: 'Describe your subject expertise, languages, availability and one relevant work example. Ask a trusted contact whether they can introduce you to a suitable team.' },
@@ -12,12 +15,16 @@ export const demoInformation: Record<string, Information> = {
   ] },
   'AI Platforms': { intro: 'Understand the companies and platforms connecting human expertise with AI development.', sections: [
     { heading: 'Compare companies', text: 'Outlier, TELUS Digital and Alignerr illustrate different AI-work models. Compare supported countries, assessments, project availability and payment conditions on official company channels.' },
+    { heading: 'Three platform tiers', text: 'Expert networks (Mercor, Alignerr, Micro1, Turing, Pasiflora, Rex.zone, Handshake AI) pay the most for credentials. Generalist gateways (Outlier, DataAnnotation, Prolific, Toloka) accept strong writers and reasoners. Enterprise providers (TELUS Digital, Appen, RWS, Welocalize, DataForce, Centific) focus on raters and linguists worldwide.' },
+    { heading: 'Who owns whom', text: 'Outlier is Scale AI; DataAnnotation is Surge AI; Alignerr is Labelbox; Mindrift is Toloka AI; DataForce is TransPerfect; TrainAI is RWS. Open Companies for all 28 profiles with pay, entry tests and links.' },
     { heading: 'Follow platform developments', text: 'Watch for changes in qualification requirements, task types and data-handling policies. A directory profile is a starting point for research, not an endorsement or hiring guarantee.' },
   ] },
   'AI Learning': { intro: 'Build the foundations to assess AI output and contribute thoughtful human feedback.', sections: [
     { heading: 'Tools', text: 'Explore writing assistants, spreadsheets and coding environments. Choose the tool for the task and avoid uploading confidential project data without permission.' },
     { heading: 'Models', text: 'Learn how language models, image models and multimodal systems differ, and why every output still needs human judgement.' },
-    { heading: 'Education', text: 'Start with accuracy and clarity, practise comparing responses, then develop expertise in your chosen subject area.' },
+    { heading: 'AI Tools & Models', text: 'One explorer with two parts: Tools (trending, widely used evaluation, annotation, prompting and productivity tools) and Models (GPT-5, Claude, Gemini, Llama, DeepSeek, Grok and more, with versions and who trains them).' },
+    { heading: 'AI Educate', text: '15 courses, trainings and certifications — from free foundations (Elements of AI, OpenAI Academy) through prompting and evaluation, technical courses (Hugging Face, fast.ai), certificates (Microsoft AI-900, AWS AI Practitioner) and AI safety.' },
+    { heading: 'Suggested path', text: 'Week 1–2: a foundations course. Week 3–4: prompt engineering and evaluation. Then a certificate or technical course in your field, and apply to 2–3 platforms from the Companies directory.' },
   ] },
   'AI Tools': { intro: 'A starter toolkit for research, writing and evaluation.', sections: [
     { heading: 'Writing and reasoning assistants', text: 'ChatGPT, Claude and Gemini are examples of conversational tools for drafting and comparing ideas. Check factual claims independently; fluent wording is not evidence of accuracy.' },
