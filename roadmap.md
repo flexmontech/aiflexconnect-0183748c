@@ -10,3 +10,4 @@
 - [x] Shrink carousel and learning circles
 - [x] AI Tools directory tab
 - [ ] Referrals tab (on hold — user will revisit)
+- [x] Merge AI Tools & Models, AI Educate courses, 28 platforms, deeper tab info, new disclaimer
