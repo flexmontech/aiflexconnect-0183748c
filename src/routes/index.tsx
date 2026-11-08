@@ -98,10 +98,9 @@ function Index() {
       { name: 'AI Updates', act: () => go('updates') },
     ] },
     { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
-      { name: 'AI Tools', act: () => openDir('tools') },
-      { name: 'AI Models', act: () => openDir('models') },
+      { name: 'AI Tools & Models', act: () => openDir('tools') },
       { name: 'AI Update', act: () => go('updates') },
-      { name: 'AI Educate', act: () => go('learning') },
+      { name: 'AI Educate', act: () => openDir('educate') },
     ] },
   ];
 
@@ -113,7 +112,7 @@ function Index() {
     <p><strong>{o.rate} / hour</strong> <span className="text-muted-foreground">· illustrative</span></p>
     <p className="text-muted-foreground">Skills: {o.skills.join(' · ')}</p>
     <InformationSections sections={[{ heading: 'Typical tasks', text: `Use ${o.skills.join(', ')} to review examples, follow a quality rubric and explain your decisions clearly.` }, { heading: 'Application checklist', text: 'Prepare a relevant work sample, verify location eligibility and review the official assessment and payment terms. Project availability and rates can vary.' }]} />
-    <p className="rounded-lg border-l-2 border-coral bg-coral-soft p-3 leading-relaxed">This is sample content, not a live listing. Always check a platform's eligibility, pay terms and legitimacy before applying.</p>
+    <p className="rounded-lg border-l-2 border-coral bg-coral-soft p-3 leading-relaxed">Check AI platform's eligibility, Pay terms and Current dates</p>
   </div> });
 
   return <div id="home" className="bg-background text-foreground">

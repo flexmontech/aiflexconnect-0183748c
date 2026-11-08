@@ -26,7 +26,20 @@ export const workPlatforms: WorkPlatform[] = [
   { name: 'OneForma', parent: 'Pactera EDGE', status: 'Private', tier: 'Enterprise', targets: 'Multilingual contributors', pay: '$8–$25/hr', entry: 'Per-project qualifications', url: 'https://www.oneforma.com' },
   { name: 'Prolific', parent: 'Prolific (independent)', status: 'Private, UK-based', tier: 'Generalist', targets: 'Research participants, AI taskers', pay: '$8–$30+/hr', entry: 'Profile + screener studies', url: 'https://www.prolific.com' },
   { name: 'TaskUs', parent: 'TaskUs Inc.', status: 'Public (NASDAQ: TASK)', tier: 'Enterprise', targets: 'Content moderators, AI ops staff', pay: 'Salaried / hourly', entry: 'Standard employment hiring', url: 'https://www.taskus.com' },
+  { name: 'Turing', parent: 'Turing (independent)', status: 'Private, VC-backed', tier: 'Expert', targets: 'Senior software engineers, algorithm specialists', pay: '$30–$100+/hr', entry: 'Coding tests + technical interview', url: 'https://www.turing.com' },
+  { name: 'xAI AI Tutor', parent: 'xAI', status: 'Private', tier: 'Expert', targets: 'STEM, writing and language specialists', pay: '$35–$65/hr', entry: 'Direct application + domain assessment', url: 'https://x.ai/careers' },
+  { name: 'Snorkel Expert Network', parent: 'Snorkel AI', status: 'Private, VC-backed', tier: 'Expert', targets: 'Domain experts for frontier-lab data', pay: '$40–$150/hr', entry: 'Credential review + task trial', url: 'https://snorkel.ai' },
+  { name: 'Toloka', parent: 'Toloka AI', status: 'Private (Bezos Expeditions-backed)', tier: 'Generalist', targets: 'Global taskers, raters', pay: '$5–$20/hr', entry: 'Short training tasks', url: 'https://toloka.ai' },
+  { name: 'Clickworker', parent: 'Clickworker GmbH', status: 'Private, Germany', tier: 'Generalist', targets: 'Microtaskers, writers, raters', pay: '$5–$15/hr', entry: 'Profile + skill tests', url: 'https://www.clickworker.com' },
+  { name: 'iMerit', parent: 'iMerit Technology', status: 'Private', tier: 'Enterprise', targets: 'Annotation specialists, medical labellers', pay: 'Salaried / hourly', entry: 'Employment hiring + training', url: 'https://imerit.net' },
+  { name: 'Sama', parent: 'Sama (B Corp)', status: 'Private', tier: 'Enterprise', targets: 'Data annotators (East Africa, Asia)', pay: 'Salaried', entry: 'Employment hiring', url: 'https://www.sama.com' },
+  { name: 'CloudFactory', parent: 'CloudFactory Ltd', status: 'Private, UK/Nepal', tier: 'Enterprise', targets: 'Managed workforce annotators', pay: 'Hourly / salaried', entry: 'Application + training cohort', url: 'https://www.cloudfactory.com' },
+  { name: 'Welocalize', parent: 'Welocalize Inc.', status: 'Private', tier: 'Enterprise', targets: 'Linguists, search raters', pay: '$10–$25/hr', entry: 'Language + rater exams', url: 'https://www.welocalize.com' },
+  { name: 'DataForce', parent: 'TransPerfect', status: 'Private', tier: 'Enterprise', targets: 'Multilingual data contributors', pay: '$8–$25/hr', entry: 'Per-project qualifications', url: 'https://www.dataforce.ai' },
+  { name: 'Defined.ai', parent: 'Defined.ai (independent)', status: 'Private', tier: 'Enterprise', targets: 'Speech and language contributors', pay: 'Per task', entry: 'Neevo app qualification', url: 'https://www.defined.ai' },
+  { name: 'Centific', parent: 'Centific (ex-Pactera EDGE)', status: 'Private', tier: 'Enterprise', targets: 'Linguists, AI safety raters', pay: '$10–$30/hr', entry: 'Project-based exams', url: 'https://centific.com' },
 ];
+
 
 export const aiModels: AIModel[] = [
   { name: 'GPT-5 / o-series', maker: 'OpenAI', version: 'GPT-5, o3, o4-mini', type: 'Reasoning', note: 'Chain-of-thought reasoning for maths, code and science.', trainedVia: ['Outlier', 'Mercor', 'Handshake AI'] },
@@ -56,4 +69,24 @@ export const aiTools: AITool[] = [
   { name: 'LM Studio', maker: 'Element Labs', type: 'Prompting', use: 'Run open-weights models (Llama, DeepSeek, Mistral) on your own computer.', tip: 'Compare open models privately and for free.', url: 'https://lmstudio.ai' },
   { name: 'NotebookLM', maker: 'Google', type: 'Productivity', use: 'Summarise guidelines and research papers from your own sources.', tip: 'Load long project guidelines to study them faster.', url: 'https://notebooklm.google' },
   { name: 'Grammarly', maker: 'Grammarly', type: 'Productivity', use: 'Polish written rationales and feedback for clarity.', tip: 'Clear, error-free justifications raise quality scores.', url: 'https://www.grammarly.com' },
+];
+
+export type Course = { name: string; provider: string; level: 'Foundations' | 'Prompting & Evaluation' | 'Technical' | 'Certification' | 'AI Safety'; cost: string; duration: string; learn: string; url: string };
+
+export const courses: Course[] = [
+  { name: 'Elements of AI', provider: 'University of Helsinki', level: 'Foundations', cost: 'Free', duration: '~30 hrs', learn: 'Plain-language intro to what AI is, can and cannot do.', url: 'https://www.elementsofai.com' },
+  { name: 'AI For Everyone', provider: 'DeepLearning.AI (Coursera)', level: 'Foundations', cost: 'Free to audit', duration: '~6 hrs', learn: 'Non-technical overview of AI projects and terminology.', url: 'https://www.coursera.org/learn/ai-for-everyone' },
+  { name: 'Google AI Essentials', provider: 'Google (Coursera)', level: 'Foundations', cost: 'Subscription', duration: '~10 hrs', learn: 'Everyday productivity with generative AI and responsible use.', url: 'https://www.coursera.org/learn/google-ai-essentials' },
+  { name: 'OpenAI Academy', provider: 'OpenAI', level: 'Foundations', cost: 'Free', duration: 'Self-paced', learn: 'Workshops and guides on using ChatGPT and the API well.', url: 'https://academy.openai.com' },
+  { name: 'Prompt Engineering Interactive Tutorial', provider: 'Anthropic', level: 'Prompting & Evaluation', cost: 'Free', duration: '~5 hrs', learn: 'Hands-on lessons in clear instructions, roles and examples.', url: 'https://github.com/anthropics/prompt-eng-interactive-tutorial' },
+  { name: 'ChatGPT Prompt Engineering for Developers', provider: 'DeepLearning.AI', level: 'Prompting & Evaluation', cost: 'Free', duration: '~1.5 hrs', learn: 'Prompt patterns for summarising, inferring and transforming text.', url: 'https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/' },
+  { name: 'Evaluating AI Agents', provider: 'DeepLearning.AI', level: 'Prompting & Evaluation', cost: 'Free', duration: '~2 hrs', learn: 'How to score, trace and improve AI agent outputs — core evaluator skill.', url: 'https://www.deeplearning.ai/short-courses/' },
+  { name: 'Hugging Face LLM Course', provider: 'Hugging Face', level: 'Technical', cost: 'Free', duration: 'Self-paced', learn: 'Transformers, fine-tuning and datasets with open models.', url: 'https://huggingface.co/learn/llm-course' },
+  { name: 'Practical Deep Learning for Coders', provider: 'fast.ai', level: 'Technical', cost: 'Free', duration: '~9 weeks', learn: 'Build and train real models with code from lesson one.', url: 'https://course.fast.ai' },
+  { name: 'Neural Networks: Zero to Hero', provider: 'Andrej Karpathy', level: 'Technical', cost: 'Free', duration: '~20 hrs video', learn: 'Build a GPT from scratch to truly understand LLMs.', url: 'https://karpathy.ai/zero-to-hero.html' },
+  { name: 'Microsoft Azure AI Fundamentals (AI-900)', provider: 'Microsoft', level: 'Certification', cost: 'Exam ~$99', duration: '~10 hrs prep', learn: 'Entry-level certificate on AI workloads and responsible AI.', url: 'https://learn.microsoft.com/credentials/certifications/azure-ai-fundamentals/' },
+  { name: 'AWS Certified AI Practitioner', provider: 'Amazon Web Services', level: 'Certification', cost: 'Exam ~$100', duration: '~15 hrs prep', learn: 'Validates understanding of AI, ML and generative AI concepts.', url: 'https://aws.amazon.com/certification/certified-ai-practitioner/' },
+  { name: 'IBM AI Engineering Professional Certificate', provider: 'IBM (Coursera)', level: 'Certification', cost: 'Subscription', duration: '~4 months', learn: 'Machine learning, deep learning and LLM engineering portfolio.', url: 'https://www.coursera.org/professional-certificates/ai-engineer' },
+  { name: 'AI Safety Fundamentals', provider: 'BlueDot Impact', level: 'AI Safety', cost: 'Free (cohort)', duration: '~8 weeks', learn: 'Alignment, red-teaming and governance — useful for safety rater roles.', url: 'https://bluedot.org' },
+  { name: 'Red Teaming LLM Applications', provider: 'DeepLearning.AI × Giskard', level: 'AI Safety', cost: 'Free', duration: '~1 hr', learn: 'Find jailbreaks, bias and harmful outputs systematically.', url: 'https://www.deeplearning.ai/short-courses/red-teaming-llm-applications/' },
 ];
