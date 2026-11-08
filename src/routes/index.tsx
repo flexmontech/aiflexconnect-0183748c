@@ -99,7 +99,6 @@ function Index() {
     ] },
     { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
       { name: 'AI Tools & Models', act: () => openDir('tools') },
-      { name: 'AI Update', act: () => go('updates') },
       { name: 'AI Educate', act: () => openDir('educate') },
     ] },
   ];
@@ -216,7 +215,10 @@ function Index() {
       {/* Platforms */}
       <section id="platforms" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
-          <Heading label="Where the work is" title="AI Platforms" text="A small preview of platforms people use for AI training work." />
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <Heading label="Where the work is" title="AI Featured Platforms" text="10 trending and popular platforms for AI training work." />
+            <button type="button" onClick={() => openDir('platforms')} className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-coral underline underline-offset-4">see full list here <ArrowUpRight className="h-4 w-4" /></button>
+          </div>
           <Carousel>
             {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
               <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>

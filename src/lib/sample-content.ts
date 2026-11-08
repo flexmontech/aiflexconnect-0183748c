@@ -13,6 +13,13 @@ export const platforms = [
   { name: 'Outlier', mark: 'O', tone: 'gold', subtitle: 'Put your expertise to work', text: 'AI training projects for writers, coders and subject-matter experts.', tags: 'AI training · Flexible projects' },
   { name: 'TELUS Digital', mark: 'T', tone: 'coral', subtitle: 'Human insight. Better AI.', text: 'A global community contributing to data, search and AI evaluation.', tags: 'AI evaluation · Global community' },
   { name: 'Alignerr', mark: 'a', tone: 'mint', subtitle: 'Expertise that shapes AI', text: 'Connect your specialist knowledge with language-model projects.', tags: 'Expert evaluation · Remote work' },
+  { name: 'DataAnnotation', mark: 'DA', tone: 'gold', subtitle: 'Backed by Surge AI', text: 'Writing, coding and reasoning tasks for frontier models.', tags: 'LLM training · $20–$40/hr' },
+  { name: 'Mercor', mark: 'M', tone: 'coral', subtitle: 'Expert talent for AI labs', text: 'Domain experts, engineers and professionals matched via AI interview.', tags: 'Expert networks · $30–$150/hr' },
+  { name: 'Handshake AI', mark: 'H', tone: 'mint', subtitle: 'Campus to AI pipeline', text: 'Graduate students and PhDs training models in their field.', tags: 'Academic experts · $30–$100/hr' },
+  { name: 'Micro1', mark: 'm1', tone: 'gold', subtitle: 'Top 1% talent', text: 'Software engineers and specialists vetted by AI-led screening.', tags: 'Engineering · Contract roles' },
+  { name: 'Rex.zone', mark: 'R', tone: 'coral', subtitle: 'RemoExperts network', text: 'STEM PhDs, engineers and creatives across 50+ countries.', tags: 'SME projects · Remote' },
+  { name: 'Mindrift', mark: 'Mi', tone: 'mint', subtitle: 'Powered by Toloka AI', text: 'Writers, editors and experts producing high-quality AI data.', tags: 'AI tutoring · Freelance' },
+  { name: 'Appen', mark: 'Ap', tone: 'gold', subtitle: 'Global AI data leader', text: 'Language, search and annotation tasks for contributors worldwide.', tags: 'Global tasks · $8–$20/hr' },
 ];
 
 export const lessons = [
