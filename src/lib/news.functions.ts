@@ -64,3 +64,28 @@ export const getLatestAINews = createServerFn({ method: 'GET' }).handler(async (
   if (items.length) cache = { at: Date.now(), items };
   return { items: items.length ? items : cache?.items ?? [], sources };
 });
+
+// Lead insights: research outlets kept separate from the daily feeds above, so nothing repeats.
+const INSIGHT_FEEDS = [
+  { badge: 'Lead insight of the week', source: 'MIT Technology Review', url: 'https://www.technologyreview.com/topic/artificial-intelligence/feed' },
+  { badge: 'Platform note of the week', source: 'Rest of World', url: 'https://restofworld.org/feed/latest' },
+];
+const INSIGHT_TTL = 48 * 60 * 60 * 1000; // refresh every 2 days
+let insightCache: { at: number; items: (NewsItem & { badge: string })[] } | null = null;
+
+export const getLeadInsights = createServerFn({ method: 'GET' }).handler(async () => {
+  if (insightCache && Date.now() - insightCache.at < INSIGHT_TTL) return insightCache.items;
+  const results = await Promise.allSettled(INSIGHT_FEEDS.map(async f => {
+    const res = await fetch(f.url, { headers: { ...UA, Accept: 'application/rss+xml, application/xml, text/xml' }, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error(`${f.source} ${res.status}`);
+    let items = parse(await res.text(), f.source);
+    if (f.source === 'Rest of World') items = items.filter(i => /\bAI\b|artificial|data|worker|gig|platform/i.test(i.title + i.summary)).concat(items);
+    const top = items[0];
+    if (!top) throw new Error(`${f.source} empty`);
+    return { ...top, badge: f.badge };
+  }));
+  results.forEach(r => { if (r.status === 'rejected') console.error('Insight feed failed:', r.reason); });
+  const items = results.flatMap(r => (r.status === 'fulfilled' ? [r.value] : []));
+  if (items.length) insightCache = { at: Date.now(), items };
+  return items.length ? items : insightCache?.items ?? [];
+});
