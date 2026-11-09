@@ -5,10 +5,11 @@ import { joinCommunity } from '@/lib/community.functions';
 import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
+import { categories, opportunities, platforms, lessons } from '@/lib/sample-content';
 import { DirectoryDialog, type DirectoryTab } from '@/components/DirectoryDialog';
 import { LiveNews } from '@/components/LiveNews';
-import { demoInformation, lessonSections, updateSections } from '@/lib/demo-content';
+import { LeadInsights } from '@/components/LeadInsights';
+import { demoInformation, lessonSections } from '@/lib/demo-content';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -265,15 +266,8 @@ function Index() {
       <section id="updates" className="section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Stay informed" title="AI Updates" />
+          <LeadInsights />
           <LiveNews />
-          <h3 className="mb-2 mt-12 font-display text-xl font-bold">AI FLEX insights</h3>
-          <div className="divide-y divide-border">
-            {updates.map((u, i) => <Button variant="ghost" key={u.title} onClick={() => setModal({ title: u.title, text: u.text, detail: <InformationSections sections={updateSections[i] ?? []} /> })} className="group grid h-auto w-full gap-2 whitespace-normal rounded-none p-6 text-left transition-colors hover:bg-muted sm:grid-cols-[140px_1fr_auto] sm:items-center sm:gap-6">
-              <span className="text-xs text-muted-foreground">{u.date}</span>
-              <span><span className="section-label text-coral">{u.label}</span><span className="mt-1 block font-display text-lg font-bold">{u.title}</span><span className="mt-1 block text-sm text-muted-foreground">{u.text}</span></span>
-              <ArrowUpRight className="hidden h-5 w-5 text-muted-foreground group-hover:text-foreground sm:block" />
-            </Button>)}
-          </div>
         </div>
       </section>
 
