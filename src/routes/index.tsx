@@ -92,7 +92,6 @@ function Index() {
   const navGroups = [
     { name: 'AI Work', act: () => showInformation('AI Work'), intro: 'Roles, skills and pathways into AI work.', subs: [
       { name: 'Jobs', act: () => go('featured') },
-      { name: 'Referrals', act: () => showInformation('Referrals') },
     ] },
     { name: 'AI Platforms', act: () => showInformation('AI Platforms'), intro: 'Companies, project types and industry developments.', subs: [
       { name: 'Companies', act: () => openDir('platforms') },
@@ -178,20 +177,7 @@ function Index() {
             <select value={location} onChange={e => setLocation(e.target.value)} aria-label="Location" className="h-14 rounded-full border border-input bg-background px-4">{locations.map(l => <option key={l}>{l}</option>)}</select>
             <Button className="h-14 rounded-full px-7" onClick={() => go('featured')}>Search</Button>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs">{['Writing', 'Coding', 'Research', 'Annotation'].map(t => <Button variant="outline" key={t} onClick={() => { setQuery(t); setCategory('All'); setLocation('All locations'); go('featured'); }} className="rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:border-primary hover:text-foreground">{t}</Button>)}</div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section id="categories" className="section-space scroll-mt-20 band-gold">
-        <div className="section-shell">
-          <Heading label="Explore" title="View AI Work Categories" text="Six ways people contribute human judgement to AI." />
-          <Carousel>
-            {categories.map((c, i) => { const info = categoryInfo[c]; if (!info) return null; const { icon: Icon, text } = info; return <Button variant="outline" key={c} onClick={() => { setModal({ title: c, text, detail: <><InformationSections sections={[{ heading: 'What you contribute', text: `${text} Strong attention to detail and clear explanations help teams turn human expertise into useful training signals.` }, { heading: 'Getting started', text: 'Review task instructions, practise with examples from your subject area and compare eligibility requirements before applying.' }]} /><Button className="rounded-full" onClick={() => { setModal(null); pickCategory(c); }}>Explore {c} roles <ArrowRight /></Button></> }); }} className="circle-tile lift group tile-gold">
-              <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full shadow-sm ${i % 3 === 2 ? 'bg-coral text-white' : 'bg-card text-coral'}`}><Icon className="h-5 w-5" /></span>
-              <span className="font-display font-bold">{c}</span><span className="text-sm text-muted-foreground">{text}</span><ArrowUpRight className="h-4 w-4 text-coral" />
-            </Button>; })}
-          </Carousel>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs">{categories.map(t => <Button variant="outline" key={t} onClick={() => { setQuery(''); setLocation('All locations'); pickCategory(t); }} className="rounded-full border border-border px-3 py-1.5 text-muted-foreground hover:border-primary hover:text-foreground">{t}</Button>)}</div>
         </div>
       </section>
 
@@ -217,11 +203,11 @@ function Index() {
       <section id="platforms" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <Heading label="Where the work is" title="AI Featured Platforms" text="10 trending and popular platforms for AI training work." />
+            <Heading label="Where the work is" title="AI Featured Platforms" text="5 trending platforms for AI training work." />
             <button type="button" onClick={() => openDir('platforms')} className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-coral underline underline-offset-4">see full list here <ArrowUpRight className="h-4 w-4" /></button>
           </div>
           <Carousel>
-            {platforms.map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
+            {platforms.slice(0, 5).map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
               <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
               <h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
               <p className="text-sm text-muted-foreground">{p.text}</p>
