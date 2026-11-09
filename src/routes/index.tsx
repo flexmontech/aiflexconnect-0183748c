@@ -5,11 +5,11 @@ import { joinCommunity } from '@/lib/community.functions';
 import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { categories, opportunities, platforms, lessons, updates } from '@/lib/sample-content';
+import { categories, opportunities, platforms, lessons } from '@/lib/sample-content';
 import { DirectoryDialog, type DirectoryTab } from '@/components/DirectoryDialog';
 import { LiveNews } from '@/components/LiveNews';
 import { LeadInsights } from '@/components/LeadInsights';
-import { demoInformation, lessonSections, updateSections } from '@/lib/demo-content';
+import { demoInformation, lessonSections } from '@/lib/demo-content';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -268,6 +268,7 @@ function Index() {
           <Heading label="Stay informed" title="AI Updates" />
           <LeadInsights />
           <LiveNews />
+        </div>
       </section>
 
       {/* Join + Footer (dark band) */}
