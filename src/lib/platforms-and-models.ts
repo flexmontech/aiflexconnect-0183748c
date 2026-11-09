@@ -90,3 +90,21 @@ export const courses: Course[] = [
   { name: 'AI Safety Fundamentals', provider: 'BlueDot Impact', level: 'AI Safety', cost: 'Free (cohort)', duration: '~8 weeks', learn: 'Alignment, red-teaming and governance — useful for safety rater roles.', url: 'https://bluedot.org' },
   { name: 'Red Teaming LLM Applications', provider: 'DeepLearning.AI × Giskard', level: 'AI Safety', cost: 'Free', duration: '~1 hr', learn: 'Find jailbreaks, bias and harmful outputs systematically.', url: 'https://www.deeplearning.ai/short-courses/red-teaming-llm-applications/' },
 ];
+
+export type Tip = { title: string; topic: 'Getting Hired' | 'Interview Help' | 'Doing the Work' | 'Pay & Growth' | 'Reviews & Safety'; advice: string; action: string };
+
+export const tips: Tip[] = [
+  { title: 'Treat the assessment like the job', topic: 'Getting Hired', advice: 'Most platforms decide on your first skills test. Read every instruction twice and take your time — speed rarely matters, accuracy does.', action: 'Do assessments when rested, in one sitting.' },
+  { title: 'Lead your profile with your specialism', topic: 'Getting Hired', advice: 'Expert projects pay most. Put your degree, language or coding skill in the first line of your profile and CV.', action: 'Rewrite your headline as "Domain + AI evaluation".' },
+  { title: 'Apply to 4–6 platforms at once', topic: 'Getting Hired', advice: 'Work comes in waves. Being active on several platforms keeps income steady when one goes quiet.', action: 'Track applications in a simple spreadsheet.' },
+  { title: 'Prepare for the AI video interview', topic: 'Interview Help', advice: 'Mercor, Micro1 and others use recorded AI interviews. Look at the camera, answer in 60–90 seconds and give one concrete example each time.', action: 'Practise 3 answers aloud and record yourself.' },
+  { title: 'Explain your reasoning out loud', topic: 'Interview Help', advice: 'Reviewers want to hear how you judge a response: accuracy, helpfulness, safety, then style. Say this order clearly.', action: 'Use "What, why, so what" for each judgement.' },
+  { title: 'Common questions to rehearse', topic: 'Interview Help', advice: '"Describe a time you found an error others missed." "How would you rate a confident but wrong answer?" "How do you handle unclear guidelines?"', action: 'Write short STAR answers for each.' },
+  { title: 'Guidelines beat instinct', topic: 'Doing the Work', advice: 'Quality reviewers score you against the project guide, not your opinion. When unsure, quote the rule you followed in your rationale.', action: 'Keep a one-page summary of each project guide.' },
+  { title: 'Write short, specific rationales', topic: 'Doing the Work', advice: 'Two or three sentences naming the exact problem ("states the wrong year in line 2") beat long general comments.', action: 'Name the error, the rule, and the fix.' },
+  { title: 'Fact-check with sources', topic: 'Doing the Work', advice: 'Never trust a model\'s facts. Check claims against reliable sources before marking a response correct.', action: 'Keep trusted reference sites bookmarked.' },
+  { title: 'Quality unlocks higher pay', topic: 'Pay & Growth', advice: 'Strong review scores move you to reviewer, team lead and expert projects that pay more per hour.', action: 'Ask for feedback after each project batch.' },
+  { title: 'Build a skill ladder', topic: 'Pay & Growth', advice: 'Generalist → prompt writing → coding or domain expert → red-teaming. Each step opens better-paid work.', action: 'Pick one course from AI Educate per month.' },
+  { title: 'Never pay to join', topic: 'Reviews & Safety', advice: 'Real AI work platforms do not charge fees. Messages asking for payment, crypto or bank logins are scams.', action: 'Only apply through official sites.' },
+  { title: 'Read worker reviews first', topic: 'Reviews & Safety', advice: 'Check Reddit, Glassdoor and Trustpilot for recent comments on pay delays, project gaps and support.', action: 'Look at reviews from the last 3 months.' },
+];

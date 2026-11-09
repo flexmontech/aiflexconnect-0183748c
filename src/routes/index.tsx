@@ -92,6 +92,7 @@ function Index() {
     { name: 'AI Learning', act: () => showInformation('AI Learning'), intro: 'Tools, models and practical learning foundations.', subs: [
       { name: 'AI Tools & Models', act: () => openDir('tools') },
       { name: 'AI Educate', act: () => openDir('educate') },
+      { name: 'AI Tips & Advice', act: () => openDir('tips') },
     ] },
   ];
 
