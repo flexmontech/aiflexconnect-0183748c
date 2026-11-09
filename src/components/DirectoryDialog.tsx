@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { aiModels, aiTools, courses, workPlatforms } from '@/lib/platforms-and-models';
+import { aiModels, aiTools, courses, tips, workPlatforms } from '@/lib/platforms-and-models';
 
-export type DirectoryTab = 'platforms' | 'models' | 'tools' | 'educate';
+export type DirectoryTab = 'platforms' | 'models' | 'tools' | 'educate' | 'tips';
 
 export function DirectoryDialog({ tab, onTab, onClose }: { tab: DirectoryTab | null; onTab: (t: DirectoryTab) => void; onClose: () => void }) {
   const [filter, setFilter] = useState('All');
@@ -11,17 +11,18 @@ export function DirectoryDialog({ tab, onTab, onClose }: { tab: DirectoryTab | n
   const modelFilters = ['All', 'Reasoning', 'Multimodal', 'Open-Weights'];
   const toolFilters = ['All', 'Evaluation', 'Annotation', 'Prompting', 'Productivity'];
   const courseFilters = ['All', 'Foundations', 'Prompting & Evaluation', 'Technical', 'Certification', 'AI Safety'];
-  const filters = tab === 'educate' ? courseFilters : tab === 'models' ? modelFilters : tab === 'tools' ? toolFilters : platformFilters;
+  const tipFilters = ['All', 'Getting Hired', 'Interview Help', 'Doing the Work', 'Pay & Growth', 'Reviews & Safety'];
+  const filters = tab === 'tips' ? tipFilters : tab === 'educate' ? courseFilters : tab === 'models' ? modelFilters : tab === 'tools' ? toolFilters : platformFilters;
   const switchTab = (t: DirectoryTab) => { setFilter('All'); onTab(t); };
 
   return <Dialog open={!!tab} onOpenChange={o => !o && onClose()}>
     <DialogContent className="max-h-[88dvh] overflow-y-auto sm:max-w-4xl">
       <DialogHeader>
-        <DialogTitle className="font-display text-xl">{tab === 'platforms' ? `AI Platforms Directory (${workPlatforms.length})` : tab === 'educate' ? 'AI Educate — Courses & Training' : 'AI Tools & Models'}</DialogTitle>
-        <DialogDescription>{tab === 'platforms' ? 'Who owns each AI work platform, what it pays and how to get in. Always confirm on the official site.' : tab === 'educate' ? 'Courses, training and certifications that build AI trainer, evaluator and research skills.' : 'Trending, important tools used in the AI industry — and the frontier models they work with.'}</DialogDescription>
+        <DialogTitle className="font-display text-xl">{tab === 'platforms' ? `AI Platforms Directory (${workPlatforms.length})` : tab === 'tips' ? 'AI Tips & Advice' : tab === 'educate' ? 'AI Educate — Courses & Training' : 'AI Tools & Models'}</DialogTitle>
+        <DialogDescription>{tab === 'platforms' ? 'Who owns each AI work platform, what it pays and how to get in. Always confirm on the official site.' : tab === 'tips' ? 'Practical advice on getting hired, passing interviews, doing quality work and staying safe.' : tab === 'educate' ? 'Courses, training and certifications that build AI trainer, evaluator and research skills.' : 'Trending, important tools used in the AI industry — and the frontier models they work with.'}</DialogDescription>
       </DialogHeader>
       <div className="flex flex-wrap gap-2">
-        {tab !== 'platforms' && tab !== 'educate' && (['tools', 'models'] as const).map(t => <button key={t} onClick={() => switchTab(t)} className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === t ? 'bg-foreground text-background' : 'border border-border'}`}>{t === 'models' ? `Models (${aiModels.length})` : `Tools (${aiTools.length})`}</button>)}
+        {tab !== 'platforms' && tab !== 'educate' && tab !== 'tips' && (['tools', 'models'] as const).map(t => <button key={t} onClick={() => switchTab(t)} className={`rounded-full px-5 py-2 text-sm font-semibold ${tab === t ? 'bg-foreground text-background' : 'border border-border'}`}>{t === 'models' ? `Models (${aiModels.length})` : `Tools (${aiTools.length})`}</button>)}
       </div>
       <div className="flex flex-wrap gap-2">
         {filters.map(f => <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-3 py-1 text-xs font-semibold ${filter === f ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>{f}</button>)}
@@ -41,6 +42,12 @@ export function DirectoryDialog({ tab, onTab, onClose }: { tab: DirectoryTab | n
           <p className="mt-2">{t.use}</p>
           <p className="mt-2 text-xs"><strong>Tip:</strong> {t.tip}</p>
           <a href={t.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 rounded-full bg-foreground px-4 py-1.5 text-xs font-semibold text-background">Open tool <ArrowUpRight className="h-3 w-3" /></a>
+        </article>)}
+      </div> : tab === 'tips' ? <div className="grid gap-3 sm:grid-cols-2">
+        {tips.filter(t => filter === 'All' || t.topic === filter).map(t => <article key={t.title} className="rounded-xl border border-border p-4 text-sm">
+          <div className="flex items-start justify-between gap-2"><h3 className="font-display text-base font-bold">{t.title}</h3><span className="rounded-full bg-muted px-2 py-0.5 text-xs">{t.topic}</span></div>
+          <p className="mt-2">{t.advice}</p>
+          <p className="mt-2 text-xs font-semibold text-destructive">Do this: {t.action}</p>
         </article>)}
       </div> : tab === 'educate' ? <div className="grid gap-3 sm:grid-cols-2">
         {courses.filter(c => filter === 'All' || c.level === filter).map(c => <article key={c.name} className="rounded-xl border border-border p-4 text-sm">
