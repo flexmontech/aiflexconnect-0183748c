@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { useServerFn } from '@tanstack/react-start';
 import { joinCommunity } from '@/lib/community.functions';
-import { ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, Clock3, Code2, FlaskConical, Layers3, MapPin, Menu, Search, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, MapPin, Menu, Search, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { categories, opportunities, platforms, lessons } from '@/lib/sample-content';
@@ -25,14 +25,6 @@ export const Route = createFileRoute('/')({
 
 type Modal = { title: string; text: string; detail?: ReactNode } | null;
 
-const categoryInfo: Record<string, { icon: typeof BrainCircuit; text: string }> = {
-  'AI Trainer': { icon: BrainCircuit, text: 'Teach models through writing, examples and expert feedback.' },
-  'AI Evaluator': { icon: CheckCheck, text: 'Judge AI output for quality, relevance and accuracy.' },
-  'LLM Evaluation': { icon: Code2, text: 'Review language-model reasoning and responses.' },
-  'Data Annotation': { icon: Layers3, text: 'Label text, image and audio data that AI learns from.' },
-  'AI Research': { icon: FlaskConical, text: 'Support studies on how people and AI work together.' },
-  'AI Safety': { icon: ShieldCheck, text: 'Help test AI for harmful, biased or unsafe behaviour.' },
-};
 
 function InformationSections({ sections }: { sections: { heading: string; text: string }[] }) {
   return <div className="space-y-5 py-2">{sections.map(s => <section key={s.heading}><h3 className="mb-1 font-display text-sm font-bold">{s.heading}</h3><p className="text-sm leading-relaxed text-muted-foreground">{s.text}</p></section>)}</div>;
