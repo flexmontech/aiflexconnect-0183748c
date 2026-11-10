@@ -192,26 +192,8 @@ function Index() {
         </div>
       </section>
 
-      {/* Platforms */}
-      <section id="platforms" className="section-space scroll-mt-20 band-stone">
-        <div className="section-shell">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <Heading label="Where the work is" title="AI Featured Platforms" text="5 trending platforms for AI training work." />
-            <Link to="/platforms" className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-coral underline underline-offset-4">see full list here <ArrowUpRight className="h-4 w-4" /></Link>
-          </div>
-          <Carousel>
-            {platforms.slice(0, 5).map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
-              <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
-              <h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
-              <p className="text-sm text-muted-foreground">{p.text}</p>
-              <span className="flex items-center gap-1 text-xs font-semibold">Explore <ArrowUpRight /></span>
-            </Button>)}
-          </Carousel>
-        </div>
-      </section>
-
       {/* Learning */}
-      <section id="learning" className="section-space scroll-mt-20 bg-muted">
+      <section id="learning" className="section-space scroll-mt-20 band-stone">
         <div className="section-shell">
           <div className="mb-8 max-w-xl">
             <p className="section-label mb-2 flex items-center gap-2 text-muted-foreground"><span className="h-px w-6 bg-coral" />AI Learning</p>
@@ -238,6 +220,24 @@ function Index() {
             <p className="mx-auto mt-2 max-w-xl text-sm text-on-dark-muted">Join the community for expert advice, step-by-step masterclasses, new research breakdowns and AI work tips sent to members.</p>
             <Button size="lg" className="mt-6 h-auto whitespace-normal rounded-full px-8 py-4 text-base glow-gold" onClick={() => setJoinOpen(true)}>Join.. Get more AI tips and advice from experts <ArrowRight /></Button>
           </div>
+        </div>
+      </section>
+
+      {/* Platforms */}
+      <section id="platforms" className="section-space scroll-mt-20 bg-muted">
+        <div className="section-shell">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <Heading label="Where the work is" title="AI Featured Platforms" text="5 trending platforms for AI training work." />
+            <Link to="/platforms" className="mb-8 inline-flex items-center gap-1 text-sm font-semibold text-coral underline underline-offset-4">see full list here <ArrowUpRight className="h-4 w-4" /></Link>
+          </div>
+          <Carousel>
+            {platforms.slice(0, 5).map(p => <Button variant="outline" key={p.name} className="circle-tile lift tile-sand" onClick={() => setModal({ title: p.name, text: p.text, detail: <InformationSections sections={[{ heading: 'Platform focus', text: p.tags }, { heading: 'Typical contributor journey', text: 'Review official role requirements, complete any required assessment and confirm available projects. Acceptance and project availability depend on platform needs and contributor eligibility.' }, { heading: 'Before applying', text: 'Verify supported countries, contractor terms, payment schedules and data privacy requirements through the official company website. This profile is illustrative, not a live offer or endorsement.' }]} /> })}>
+              <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-primary bg-card font-display font-bold shadow-sm">{p.mark}</span>
+              <h3 className="font-display font-bold">{p.name}</h3><p className="text-xs text-coral">{p.subtitle}</p>
+              <p className="text-sm text-muted-foreground">{p.text}</p>
+              <span className="flex items-center gap-1 text-xs font-semibold">Explore <ArrowUpRight /></span>
+            </Button>)}
+          </Carousel>
         </div>
       </section>
 
