@@ -158,8 +158,8 @@ function Index() {
       </section>
 
       {/* Find AI Work */}
-      <section id="find" className="scroll-mt-20 relative z-10 -mt-6">
-        <div className="section-shell border-b border-border bg-background py-10">
+      <section id="find" className="band-bright scroll-mt-20 relative z-10 -mt-6">
+        <div className="section-shell border-b border-border py-10">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search roles by skill, title, category or platform.</p></div>
             <span className="text-sm text-muted-foreground"><strong className="text-foreground">{filtered.length}</strong> matching opportunities</span>
@@ -175,7 +175,7 @@ function Index() {
       </section>
 
       {/* Featured */}
-      <section id="featured" className="section-space scroll-mt-20 bg-muted">
+      <section id="featured" className="band-gold section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Opportunities" title="Featured Opportunities" text={`${filtered.length} role${filtered.length === 1 ? '' : 's'} match your search.`} action={(category !== 'All' || query || location !== 'All locations') ? <Button variant="outline" className="rounded-full" onClick={() => { setQuery(''); setCategory('All'); setLocation('All locations'); }}>Clear filters</Button> : undefined} />
           {filtered.length === 0 ? <p className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">No roles match — try another word or clear the filters.</p> :
@@ -224,7 +224,7 @@ function Index() {
       </section>
 
       {/* Platforms */}
-      <section id="platforms" className="section-space scroll-mt-20 bg-muted">
+      <section id="platforms" className="band-coral section-space scroll-mt-20">
         <div className="section-shell">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <Heading label="Where the work is" title="AI Featured Platforms" text="5 trending platforms for AI training work." />
@@ -242,7 +242,7 @@ function Index() {
       </section>
 
       {/* Updates */}
-      <section id="updates" className="section-space scroll-mt-20">
+      <section id="updates" className="band-silver section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Stay informed" title="AI Updates" />
           <LeadInsights />
