@@ -21,7 +21,7 @@ export function LiveNews() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center gap-2">
-        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> AI tools & model updates · refreshed daily</span>
+        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> One story from each AI magazine · refreshed daily</span>
         {['All', ...present].map(s => (
           <Button key={s} size="sm" variant={filter === s ? 'default' : 'outline'} className="rounded-full" onClick={() => setFilter(s)}>{s}</Button>
         ))}
@@ -33,10 +33,10 @@ export function LiveNews() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {shown.slice(0, 8).map(n => (
-            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex aspect-square flex-col overflow-hidden rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-lg">
-              <span className="flex items-center justify-between text-xs"><span className="section-label text-coral">{n.source}</span><span className="text-muted-foreground">{fmt(n.date)}</span></span>
+            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex aspect-square flex-col overflow-hidden rounded-2xl border border-border bg-muted/55 p-5 shadow-sm transition-shadow hover:shadow-lg">
+              <span className="flex items-center justify-between text-xs"><span className="section-label text-coral">{n.source}</span><span className="text-foreground/65">{fmt(n.date)}</span></span>
               <span className="mt-2 font-display text-base font-bold leading-snug">{n.title}</span>
-              <span className="mt-2 line-clamp-3 text-sm text-muted-foreground">{n.summary}</span>
+              <span className="mt-2 line-clamp-3 text-sm text-foreground/80">{n.summary}</span>
               <span className="mt-auto inline-flex items-center gap-1 pt-3 text-xs font-semibold">Read full story <ArrowUpRight className="h-3.5 w-3.5" /></span>
             </a>
           ))}

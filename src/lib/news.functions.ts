@@ -3,12 +3,16 @@ import { createServerFn } from '@tanstack/react-start';
 export type NewsItem = { title: string; link: string; source: string; date: string; summary: string };
 
 const FEEDS = [
-  { source: 'Interconnects', url: 'https://www.interconnects.ai/feed' },
-  { source: 'Ahead of AI', url: 'https://magazine.sebastianraschka.com/feed' },
-  { source: 'The Batch', url: 'batch' },
   { source: 'TLDR AI', url: 'https://tldr.tech/api/rss/ai' },
+  { source: 'The Batch', url: 'batch' },
+  { source: 'Ahead of AI', url: 'https://magazine.sebastianraschka.com/feed' },
+  { source: 'Interconnects', url: 'https://www.interconnects.ai/feed' },
+  { source: 'The Rundown AI', url: 'https://www.therundown.ai/feed' },
+  { source: 'Import AI', url: 'https://importai.substack.com/feed' },
+  { source: 'One Useful Thing', url: 'https://www.oneusefulthing.org/feed' },
+  { source: 'The Algorithmic Bridge', url: 'https://thealgorithmicbridge.substack.com/feed' },
 ];
-const PER_SOURCE = 2;
+const PER_SOURCE = 1; // one story per magazine — every box is a different publication
 const TTL = 24 * 60 * 60 * 1000; // refresh once daily
 
 let cache: { at: number; items: NewsItem[] } | null = null;
@@ -68,7 +72,7 @@ export const getLatestAINews = createServerFn({ method: 'GET' }).handler(async (
 // Lead insights: research outlets kept separate from the daily feeds above, so nothing repeats.
 const INSIGHT_FEEDS = [
   { badge: 'Lead insight of the week', source: 'MIT Technology Review', url: 'https://www.technologyreview.com/topic/artificial-intelligence/feed' },
-  { badge: 'Platform note of the week', source: 'Rest of World', url: 'https://restofworld.org/feed/latest' },
+  { badge: 'Platform note of the week', source: 'Big Technology', url: 'https://www.bigtechnology.com/feed' },
 ];
 const INSIGHT_TTL = 48 * 60 * 60 * 1000; // refresh every 2 days
 let insightCache: { at: number; items: (NewsItem & { badge: string })[] } | null = null;
@@ -79,7 +83,6 @@ export const getLeadInsights = createServerFn({ method: 'GET' }).handler(async (
     const res = await fetch(f.url, { headers: { ...UA, Accept: 'application/rss+xml, application/xml, text/xml' }, signal: AbortSignal.timeout(8000) });
     if (!res.ok) throw new Error(`${f.source} ${res.status}`);
     let items = parse(await res.text(), f.source);
-    if (f.source === 'Rest of World') items = items.filter(i => /\bAI\b|artificial|data|worker|gig|platform/i.test(i.title + i.summary)).concat(items);
     const top = items[0];
     if (!top) throw new Error(`${f.source} empty`);
     return { ...top, badge: f.badge };

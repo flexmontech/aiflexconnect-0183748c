@@ -208,6 +208,10 @@
 .circle-carousel .circle-tile svg { width: 14px; height: 14px; }
 .band-gold { background: linear-gradient(180deg, color-mix(in oklch, var(--gold-soft) 85%, var(--background)), var(--gold-soft)); }
 .band-stone { background: color-mix(in oklch, var(--foreground) 7%, var(--background)); }
+.band-silver { background: linear-gradient(180deg, color-mix(in oklch, var(--silver) 40%, var(--background)), color-mix(in oklch, var(--silver) 75%, var(--background))); }
+.band-coral { background: linear-gradient(180deg, color-mix(in oklch, var(--coral-soft) 55%, var(--background)), var(--coral-soft)); }
+.band-bright { background: linear-gradient(180deg, color-mix(in oklch, var(--gold-soft) 30%, var(--card)), var(--card)); }
+.panel-gold { background: linear-gradient(140deg, var(--gold-soft), color-mix(in oklch, var(--primary) 40%, white)); box-shadow: inset 0 0 0 1.5px color-mix(in oklch, var(--primary) 50%, transparent), 0 22px 50px -28px var(--glow); }
 .learning-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; justify-items: center; }
 
 .learning-row .circle-tile h3 { font-size: 0.9rem; }
