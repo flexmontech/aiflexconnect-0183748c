@@ -11,4 +11,5 @@
 - [x] AI Tools directory tab
 - [ ] Referrals tab (on hold — user will revisit)
 - [x] Merge AI Tools & Models, AI Educate courses, 28 platforms, deeper tab info, new disclaimer
-- [ ] AI Updates: every box (2 lead + 8 daily) from a different AI magazine/editorial, no repeats
+- [x] AI Updates: every box (2 lead + 8 daily) from a different AI magazine/editorial, no repeats
+- [x] Section colour bands: each homepage section its own contrasting colour; AI Updates brightened
