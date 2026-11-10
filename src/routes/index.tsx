@@ -158,7 +158,7 @@ function Index() {
       </section>
 
       {/* Find AI Work */}
-      <section id="find" className="band-bright scroll-mt-20 relative z-10 -mt-6">
+      <section id="find" className="band-silver scroll-mt-20 relative z-10 -mt-6">
         <div className="section-shell border-b border-border py-10">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div><h2 className="display-heading text-2xl sm:text-3xl">Find AI Work</h2><p className="mt-1 text-muted-foreground">Search roles by skill, title, category or platform.</p></div>
@@ -242,7 +242,7 @@ function Index() {
       </section>
 
       {/* Updates */}
-      <section id="updates" className="band-silver section-space scroll-mt-20">
+      <section id="updates" className="band-bright section-space scroll-mt-20">
         <div className="section-shell">
           <Heading label="Stay informed" title="AI Updates" />
           <LeadInsights />
