@@ -21,7 +21,7 @@ export function LiveNews() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center gap-2">
-        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> AI tools & model updates · refreshed daily</span>
+        <span className="mr-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-coral"><Radio className="h-4 w-4" /> One story from each AI magazine · refreshed daily</span>
         {['All', ...present].map(s => (
           <Button key={s} size="sm" variant={filter === s ? 'default' : 'outline'} className="rounded-full" onClick={() => setFilter(s)}>{s}</Button>
         ))}
