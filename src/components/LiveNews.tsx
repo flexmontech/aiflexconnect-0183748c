@@ -33,7 +33,7 @@ export function LiveNews() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {shown.slice(0, 8).map(n => (
-            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex aspect-square flex-col overflow-hidden rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-lg">
+            <a key={n.link} href={n.link} target="_blank" rel="noopener noreferrer" className="group flex aspect-square flex-col overflow-hidden rounded-2xl border border-border bg-muted/55 p-5 shadow-sm transition-shadow hover:shadow-lg">
               <span className="flex items-center justify-between text-xs"><span className="section-label text-coral">{n.source}</span><span className="text-muted-foreground">{fmt(n.date)}</span></span>
               <span className="mt-2 font-display text-base font-bold leading-snug">{n.title}</span>
               <span className="mt-2 line-clamp-3 text-sm text-muted-foreground">{n.summary}</span>
