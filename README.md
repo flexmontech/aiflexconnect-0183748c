@@ -10,7 +10,6 @@ Build the homepage UI for AI FLEX Connect.
 
 AI FLEX Connect is a professional website for discovering AI work, AI training opportunities, AI platforms, learning resources and AI-work updates.
 
-Use ExpertWoka.com only as inspiration for the professional directory/platform style and structure. Do not copy it.
 
 Use the visual feel of Flexmon.tech as inspiration for the color direction: glowing mustard/gold, grey, light red accents, dark neutrals and clean light areas. Create an original AI FLEX Connect design.
 
