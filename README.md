@@ -1,5 +1,9 @@
 # AIFlexConnect
 
+**Portfolio division:** AI & Automation
+
+@Flexmon Intellectual Property © FLEXMON LLC. All rights reserved.
+Proprietary work. Do not copy without prior written permission or signed contract.
 AI FLEX CONNECT — PHASE 1A
 
 Build the homepage UI for AI FLEX Connect.
